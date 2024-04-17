@@ -1,0 +1,9 @@
+{
+  "targets": {
+    "My app": {
+      "inputs": ["src/Main.elm"],
+      "output": "public/elm.js"
+    }
+  },
+  "serve": "public"
+}

@@ -1,0 +1,24 @@
+{
+  "name": "elm-template-minimal",
+  "version": "0.1.0",
+  "description": "A fun project built with Elm.",
+  "scripts": {
+    "dev": "run-pty run-pty.json",
+    "dev:elm": "elm-watch hot",
+    "dev:css": "css-in-elm watch public/styles.css src/Css.elm",
+    "dev:review": "elm-review --watch --fix"
+  },
+  "author": "Wolfgang Schuster",
+  "devDependencies": {
+    "@lydell/elm-json": "^0.2.13-1",
+    "@ryannhg/css-in-elm": "1.0.0",
+    "elm": "0.19.1-6",
+    "elm-format": "0.8.7",
+    "elm-review": "2.11.1",
+    "elm-watch": "2.0.0-beta.2",
+    "run-pty": "5.0.0"
+  },
+  "volta": {
+    "node": "20.12.1"
+  }
+}
