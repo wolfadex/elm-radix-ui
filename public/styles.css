@@ -5,3 +5,41 @@
 .temp {
     color: red;
 }
+
+
+/* :root {
+    --background: var(--blue-1);
+    --background-subtle: var(--blue-2);
+    --element-background: var(--blue-3);
+    --element-background-hover: var(--blue-4);
+    --element-background-selected: var(--blue-5);
+    --element-border-static: var(--blue-6);
+    --element-border-interactive: var(--blue-7);
+    --element-border-selected: var(--blue-8);
+    --background-solid: var(--blue-9);
+    --background-solid-hover: var(--blue-10);
+    --text-contrast-low: var(--blue-11);
+    --text-contrast-high: var(--blue-12);
+} */
+
+
+button {
+    background-color: var(--element-background);
+    border-color: var(--element-border-interactive);
+    border-style: solid;
+    border-width: 2px;
+    color: var(--text-contrast-high);
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+button:hover,
+button:focus {
+    background-color: var(--element-background-hover);
+    border-color: var(--element-border-selected);
+}
+
+button:active {
+    background-color: var(--element-background-selected);
+    border-color: var(--element-border-selected);
+}
