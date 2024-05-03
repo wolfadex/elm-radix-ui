@@ -64,6 +64,7 @@ view (Config config) =
         , Html.span
             [ Html.Attributes.classList
                 [ ( "rt-Spinner", True )
+                , ( "rt-Flex rt-r-ai-center rt-r-jc-center rt-r-position-absolute rt-r-inset-0", config.icon /= Nothing )
                 , ( Radix.sizeToCss config.size, True )
                 ]
             ]
