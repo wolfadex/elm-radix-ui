@@ -21,3 +21,13 @@ attributeMaybe attribute maybeValue =
 
         Nothing ->
             Html.Attributes.class ""
+
+
+classListMaybe : (a -> String) -> Maybe a -> ( String, Bool )
+classListMaybe f maybe =
+    case maybe of
+        Nothing ->
+            ( "", False )
+
+        Just a ->
+            ( f a, True )

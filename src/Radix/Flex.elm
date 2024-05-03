@@ -145,13 +145,13 @@ view (Config config) =
 
                 Just (Literal literal) ->
                     ( "", False )
-            , classListMaybe
+            , Radix.Internal.classListMaybe
                 (\alignment -> Radix.alignmentToCss alignment)
                 config.align
-            , classListMaybe
+            , Radix.Internal.classListMaybe
                 (\justify -> Radix.justifyToCss justify)
                 config.justify
-            , classListMaybe
+            , Radix.Internal.classListMaybe
                 (\wrap -> wrapToCss wrap)
                 config.wrap
             ]
@@ -167,13 +167,3 @@ view (Config config) =
             config.gap
         ]
         config.content
-
-
-classListMaybe : (a -> String) -> Maybe a -> ( String, Bool )
-classListMaybe f maybe =
-    case maybe of
-        Nothing ->
-            ( "", False )
-
-        Just a ->
-            ( f a, True )

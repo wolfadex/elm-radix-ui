@@ -1,4 +1,4 @@
-module Radix.Heading exposing (..)
+module Radix.Link exposing (..)
 
 import Html exposing (Html)
 import Html.Attributes
@@ -9,57 +9,57 @@ import Radix.Text
 
 type Config msg
     = Config
-        { content : String
-        , node : String
+        { content : List (Html msg)
+        , href : String
         , color : Maybe Radix.Color
         , isHighContrast : Bool
-        , size : Int
+        , size : Maybe Int
         , weight : Maybe Radix.Text.Weight
         , truncate : Bool
-        , alignment : Maybe Radix.Text.Align
         , trim : Maybe Radix.Text.Trim
         , wrap : Maybe Radix.Text.Wrap
+        , underline : Underline
         }
 
 
-asH2 : Config msg -> Config msg
-asH2 (Config config) =
-    Config { config | node = "h2" }
+type Underline
+    = Auto
+    | Always
+    | Hover
+    | None
 
 
-asH3 : Config msg -> Config msg
-asH3 (Config config) =
-    Config { config | node = "h3" }
+underlineToCss : Underline -> String
+underlineToCss underline =
+    "rt-underline-"
+        ++ (case underline of
+                Auto ->
+                    "auto"
+
+                Always ->
+                    "always"
+
+                Hover ->
+                    "hover"
+
+                None ->
+                    "none"
+           )
 
 
-asH4 : Config msg -> Config msg
-asH4 (Config config) =
-    Config { config | node = "h4" }
-
-
-asH5 : Config msg -> Config msg
-asH5 (Config config) =
-    Config { config | node = "h5" }
-
-
-asH6 : Config msg -> Config msg
-asH6 (Config config) =
-    Config { config | node = "h6" }
-
-
-new : String -> Config msg
-new content =
+new : { content : List (Html msg), href : String } -> Config msg
+new options =
     Config
-        { content = content
-        , node = "h1"
+        { content = options.content
+        , href = options.href
         , color = Nothing
         , isHighContrast = False
-        , size = 6
+        , size = Nothing
         , weight = Nothing
         , truncate = False
-        , alignment = Nothing
         , trim = Nothing
         , wrap = Nothing
+        , underline = Auto
         }
 
 
@@ -67,7 +67,7 @@ withSize : Int -> Config msg -> Config msg
 withSize size (Config config) =
     Config
         { config
-            | size = size
+            | size = Just size
         }
 
 
@@ -103,14 +103,6 @@ withHighContrast (Config config) =
         }
 
 
-withAlignment : Radix.Text.Align -> Config msg -> Config msg
-withAlignment alignment (Config config) =
-    Config
-        { config
-            | alignment = Just alignment
-        }
-
-
 withTrim : Radix.Text.Trim -> Config msg -> Config msg
 withTrim trim (Config config) =
     Config
@@ -129,18 +121,18 @@ withWrap wrap (Config config) =
 
 view : Config msg -> Html msg
 view (Config config) =
-    Html.node config.node
+    Html.a
         [ Html.Attributes.classList
-            [ ( "rt-Heading", True )
-            , ( "rt-r-size-" ++ String.fromInt config.size, True )
+            [ ( "rt-Text", True )
             , ( "rt-truncate", config.truncate )
             , ( "rt-high-contrast", config.isHighContrast )
+            , ( underlineToCss config.underline, True )
+            , Radix.Internal.classListMaybe
+                (\size -> "rt-r-size-" ++ String.fromInt size)
+                config.size
             , Radix.Internal.classListMaybe
                 (\weight -> Radix.Text.weightToCss weight)
                 config.weight
-            , Radix.Internal.classListMaybe
-                (\alignment -> Radix.Text.alignToCss alignment)
-                config.alignment
             , Radix.Internal.classListMaybe
                 (\trim -> Radix.Text.trimToCss trim)
                 config.trim
@@ -151,6 +143,6 @@ view (Config config) =
         , Radix.Internal.attributeMaybe
             (\color -> Html.Attributes.attribute "data-accent-color" (Radix.colorToString color))
             config.color
+        , Html.Attributes.href config.href
         ]
-        [ Html.text config.content
-        ]
+        config.content
