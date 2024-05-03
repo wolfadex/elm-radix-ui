@@ -4,6 +4,9 @@ import Browser
 import Html exposing (Html)
 import Html.Attributes
 import Html.Events
+import Radix
+import Radix.Button
+import Radix.Icon
 
 
 main : Program () Model Msg
@@ -17,14 +20,14 @@ main =
 
 
 type alias Model =
-    { theme : String
+    { theme : Radix.Color
     , darkEnabled : Bool
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { theme = "Blue"
+    ( { theme = Radix.Blue
       , darkEnabled = False
       }
     , Cmd.none
@@ -37,8 +40,9 @@ subscriptions model =
 
 
 type Msg
-    = UserSelectedTheme String
+    = UserSelectedTheme Radix.Color
     | UserClickedDarkToggle
+    | UserClickedButton
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -50,98 +54,272 @@ update msg model =
         UserClickedDarkToggle ->
             ( { model | darkEnabled = not model.darkEnabled }, Cmd.none )
 
+        UserClickedButton ->
+            ( model, Cmd.none )
+
 
 view : Model -> Browser.Document Msg
 view model =
     { title = "Hello World"
     , body =
         [ Html.h1 []
-            [ Html.text "Hello World"
+            [ Html.text "Elm Radix"
             ]
-        , Html.node "style"
-            []
-            [ let
-                themeColor =
-                    String.toLower model.theme
-
-                themeWithDark =
-                    if model.darkEnabled then
-                        themeColor ++ "-dark"
-
-                    else
-                        themeColor
-              in
-              Html.text
-                (":root {"
-                    ++ (("--background: var(--" ++ themeWithDark ++ "-1);")
-                            ++ ("--background-subtle: var(--" ++ themeWithDark ++ "-2);")
-                            ++ ("--element-background: var(--" ++ themeWithDark ++ "-3);")
-                            ++ ("--element-background-hover: var(--" ++ themeWithDark ++ "-4);")
-                            ++ ("--element-background-selected: var(--" ++ themeWithDark ++ "-5);")
-                            ++ ("--element-border-static: var(--" ++ themeWithDark ++ "-6);")
-                            ++ ("--element-border-interactive: var(--" ++ themeWithDark ++ "-7);")
-                            ++ ("--element-border-selected: var(--" ++ themeWithDark ++ "-8);")
-                            ++ ("--background-solid: var(--" ++ themeWithDark ++ "-9);")
-                            ++ ("--background-solid-hover: var(--" ++ themeWithDark ++ "-10);")
-                            ++ ("--text-contrast-low: var(--" ++ themeWithDark ++ "-11);")
-                            ++ ("--text-contrast-high: var(--" ++ themeWithDark ++ "-12);")
-                       )
-                    ++ "\n}"
-                )
-            ]
-        , themes
+        , Radix.allColors
             |> List.map
                 (\theme ->
+                    let
+                        themeStr =
+                            Radix.colorToString theme
+                    in
                     Html.option
-                        [ Html.Attributes.value theme
+                        [ Html.Attributes.value themeStr
+                        , Html.Events.onClick (UserSelectedTheme theme)
                         ]
-                        [ Html.text theme ]
+                        [ Html.text themeStr ]
                 )
             |> Html.select
-                [ Html.Events.onInput UserSelectedTheme
-                , Html.Attributes.value model.theme
+                [ Html.Attributes.value (Radix.colorToString model.theme)
                 ]
         , Html.br [] []
         , Html.br [] []
-        , Html.button
-            []
-            [ Html.text "Click me"
+        , Radix.view
+            { accentColor = model.theme
+            , backgroundColor = model.theme
+            , radius = Radix.Medium
+            }
+            [ Html.div [ Html.Attributes.class "column" ]
+                [ Html.div [ Html.Attributes.class "row" ]
+                    [ Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withSize1
+                        |> Radix.Button.withVariantSurface
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withVariantSurface
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withSize3
+                        |> Radix.Button.withVariantSurface
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withSize4
+                        |> Radix.Button.withVariantSurface
+                        |> Radix.Button.view
+                    ]
+                , Html.div [ Html.Attributes.class "row" ]
+                    [ Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withVariantClassic
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withVariantSoft
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withVariantSurface
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withVariantOutline
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withVariantGhost
+                        |> Radix.Button.view
+                    ]
+                , Html.div []
+                    [ Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withAccentColor Radix.Indigo
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withAccentColor Radix.Cyan
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withAccentColor Radix.Orange
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withAccentColor Radix.Crimson
+                        |> Radix.Button.view
+                    ]
+                , Html.div [ Html.Attributes.class "column" ]
+                    [ Html.div [ Html.Attributes.class "row" ]
+                        [ Radix.Button.new
+                            { content = [ Html.text "Click me" ]
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.Button.withAccentColor Radix.Gray
+                            |> Radix.Button.withVariantClassic
+                            |> Radix.Button.view
+                        , Radix.Button.new
+                            { content = [ Html.text "Click me" ]
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.Button.withAccentColor Radix.Gray
+                            |> Radix.Button.view
+                        , Radix.Button.new
+                            { content = [ Html.text "Click me" ]
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.Button.withAccentColor Radix.Gray
+                            |> Radix.Button.withVariantSoft
+                            |> Radix.Button.view
+                        , Radix.Button.new
+                            { content = [ Html.text "Click me" ]
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.Button.withAccentColor Radix.Gray
+                            |> Radix.Button.withVariantSurface
+                            |> Radix.Button.view
+                        , Radix.Button.new
+                            { content = [ Html.text "Click me" ]
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.Button.withAccentColor Radix.Gray
+                            |> Radix.Button.withVariantOutline
+                            |> Radix.Button.view
+                        ]
+                    , Html.div [ Html.Attributes.class "row" ]
+                        [ Radix.Button.new
+                            { content = [ Html.text "Click me" ]
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.Button.withAccentColor Radix.Gray
+                            |> Radix.Button.withVariantClassic
+                            |> Radix.Button.withHighContrast
+                            |> Radix.Button.view
+                        , Radix.Button.new
+                            { content = [ Html.text "Click me" ]
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.Button.withAccentColor Radix.Gray
+                            |> Radix.Button.withHighContrast
+                            |> Radix.Button.view
+                        , Radix.Button.new
+                            { content = [ Html.text "Click me" ]
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.Button.withAccentColor Radix.Gray
+                            |> Radix.Button.withVariantSoft
+                            |> Radix.Button.withHighContrast
+                            |> Radix.Button.view
+                        , Radix.Button.new
+                            { content = [ Html.text "Click me" ]
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.Button.withAccentColor Radix.Gray
+                            |> Radix.Button.withVariantSurface
+                            |> Radix.Button.withHighContrast
+                            |> Radix.Button.view
+                        , Radix.Button.new
+                            { content = [ Html.text "Click me" ]
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.Button.withAccentColor Radix.Gray
+                            |> Radix.Button.withVariantOutline
+                            |> Radix.Button.withHighContrast
+                            |> Radix.Button.view
+                        ]
+                    ]
+                , Html.div []
+                    [ Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withRadius Radix.None
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withRadius Radix.Small
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withRadius Radix.Medium
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withRadius Radix.Large
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withRadius Radix.Full
+                        |> Radix.Button.view
+                    ]
+                , Html.div []
+                    [ Radix.Button.new
+                        { content = [ Radix.Icon.bookmark, Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Radix.Icon.bookmark, Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Radix.Icon.bookmark, Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Radix.Icon.bookmark, Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Radix.Icon.bookmark, Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.view
+                    ]
+                ]
             ]
         ]
     }
-
-
-themes : List String
-themes =
-    [ "Gray"
-    , "Mauve"
-    , "Slate"
-    , "Sage"
-    , "Olive"
-    , "Sand"
-    , "Tomato"
-    , "Red"
-    , "Ruby"
-    , "Crimson"
-    , "Pink"
-    , "Plum"
-    , "Purple"
-    , "Violet"
-    , "Iris"
-    , "Indigo"
-    , "Blue"
-    , "Cyan"
-    , "Teal"
-    , "Jade"
-    , "Green"
-    , "Grass"
-    , "Bronze"
-    , "Gold"
-    , "Brown"
-    , "Orange"
-    , "Amber"
-    , "Yellow"
-    , "Lime"
-    , "Mint"
-    , "Sky"
-    ]
