@@ -5,6 +5,7 @@ import Html.Attributes
 import Html.Events
 import Radix
 import Radix.Internal
+import Radix.Spinner
 
 
 
@@ -15,7 +16,7 @@ type Config msg
     = Config
         { content : List (Html msg)
         , onClick : msg
-        , size : Size
+        , size : Radix.Size
         , variant : Variant
         , isHighContrast : Bool
         , isDisabled : Bool
@@ -29,52 +30,11 @@ type Config msg
 -- OPTIONS
 
 
-type Size
-    = S1
-    | S2
-    | S3
-    | S4
-
-
-sizeToCss : Size -> String
-sizeToCss size =
-    "rt-r-size-"
-        ++ (case size of
-                S1 ->
-                    "1"
-
-                S2 ->
-                    "2"
-
-                S3 ->
-                    "3"
-
-                S4 ->
-                    "4"
-           )
-
-
-withSize1 : Config msg -> Config msg
-withSize1 (Config config) =
+withSize : Radix.Size -> Config msg -> Config msg
+withSize size (Config config) =
     Config
         { config
-            | size = S1
-        }
-
-
-withSize3 : Config msg -> Config msg
-withSize3 (Config config) =
-    Config
-        { config
-            | size = S3
-        }
-
-
-withSize4 : Config msg -> Config msg
-withSize4 (Config config) =
-    Config
-        { config
-            | size = S4
+            | size = size
         }
 
 
@@ -200,7 +160,7 @@ new options =
     Config
         { content = options.content
         , onClick = options.onClick
-        , size = S2
+        , size = Radix.Size2
         , variant = VSolid
         , isHighContrast = False
         , isDisabled = False
@@ -221,7 +181,7 @@ view (Config config) =
             [ ( "rt-reset", True )
             , ( "rt-BaseButton", True )
             , ( "rt-Button", True )
-            , ( sizeToCss config.size, True )
+            , ( Radix.sizeToCss config.size, True )
             , ( variantToCss config.variant, True )
             , ( "rt-high-contrast", config.isHighContrast )
             , ( "rt-loading", config.isLoading )
@@ -229,7 +189,8 @@ view (Config config) =
         , Html.Attributes.type_ "button"
         , Html.Events.onClick config.onClick
         , Html.Attributes.attribute "data-disabled" ""
-            |> Radix.Internal.attributeIf config.isDisabled
+            |> Radix.Internal.attributeIf (config.isDisabled || config.isLoading)
+        , Html.Attributes.disabled (config.isDisabled || config.isLoading)
         , Html.Attributes.attribute "highContrast" ""
             |> Radix.Internal.attributeIf config.isHighContrast
         , Html.Attributes.attribute "data-accent-color"
@@ -243,4 +204,32 @@ view (Config config) =
             )
             config.radiusOverride
         ]
-        config.content
+        (if config.isLoading then
+            [ Html.span
+                [ Html.Attributes.style "display" "contents"
+                , Html.Attributes.style "visibility" "hidden"
+                , Html.Attributes.attribute "aria-hidden" "true"
+                ]
+                config.content
+            , Html.span
+                [ Html.Attributes.style "position" "absolute"
+                , Html.Attributes.style "border" "0px"
+                , Html.Attributes.style "width" "1px"
+                , Html.Attributes.style "height" "1px"
+                , Html.Attributes.style "padding" "0px"
+                , Html.Attributes.style "margin" "-1px"
+                , Html.Attributes.style "overflow" "hidden"
+                , Html.Attributes.style "clip" "rect(0px, 0px, 0px, 0px)"
+                , Html.Attributes.style "white-space" "nowrap"
+                , Html.Attributes.style "overflow-wrap" "normal"
+                ]
+                config.content
+            , Radix.Spinner.new
+                |> Radix.Spinner.withLoading
+                |> Radix.Spinner.withSize config.size
+                |> Radix.Spinner.view
+            ]
+
+         else
+            config.content
+        )

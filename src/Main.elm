@@ -7,6 +7,7 @@ import Html.Events
 import Radix
 import Radix.Button
 import Radix.Icon
+import Radix.Spinner
 
 
 main : Program () Model Msg
@@ -94,7 +95,7 @@ view model =
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
-                        |> Radix.Button.withSize1
+                        |> Radix.Button.withSize Radix.Size1
                         |> Radix.Button.withVariantSurface
                         |> Radix.Button.view
                     , Radix.Button.new
@@ -107,14 +108,14 @@ view model =
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
-                        |> Radix.Button.withSize3
+                        |> Radix.Button.withSize Radix.Size3
                         |> Radix.Button.withVariantSurface
                         |> Radix.Button.view
                     , Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
-                        |> Radix.Button.withSize4
+                        |> Radix.Button.withSize Radix.Size4
                         |> Radix.Button.withVariantSurface
                         |> Radix.Button.view
                     ]
@@ -294,29 +295,123 @@ view model =
                     ]
                 , Html.div []
                     [ Radix.Button.new
-                        { content = [ Radix.Icon.bookmark, Html.text "Click me" ]
+                        { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
                         |> Radix.Button.view
                     , Radix.Button.new
-                        { content = [ Radix.Icon.bookmark, Html.text "Click me" ]
+                        { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
                         |> Radix.Button.view
                     , Radix.Button.new
-                        { content = [ Radix.Icon.bookmark, Html.text "Click me" ]
+                        { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
                         |> Radix.Button.view
                     , Radix.Button.new
-                        { content = [ Radix.Icon.bookmark, Html.text "Click me" ]
+                        { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
                         |> Radix.Button.view
                     , Radix.Button.new
-                        { content = [ Radix.Icon.bookmark, Html.text "Click me" ]
+                        { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
+                        |> Radix.Button.view
+                    ]
+                , Html.div []
+                    [ Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withIsLoading
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withIsLoading
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withIsLoading
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withIsLoading
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Click me" ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withIsLoading
+                        |> Radix.Button.view
+                    ]
+                , Html.div []
+                    [ Radix.Button.new
+                        { content =
+                            [ Radix.Spinner.new
+                                |> Radix.Spinner.withLoading
+                                |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                                |> Radix.Spinner.view
+                            , Html.text "Click me"
+                            ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withIsDisabled
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content =
+                            [ Radix.Spinner.new
+                                |> Radix.Spinner.withLoading
+                                |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                                |> Radix.Spinner.view
+                            , Html.text "Click me"
+                            ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withIsDisabled
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content =
+                            [ Radix.Spinner.new
+                                |> Radix.Spinner.withLoading
+                                |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                                |> Radix.Spinner.view
+                            , Html.text "Click me"
+                            ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withIsDisabled
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content =
+                            [ Radix.Spinner.new
+                                |> Radix.Spinner.withLoading
+                                |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                                |> Radix.Spinner.view
+                            , Html.text "Click me"
+                            ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withIsDisabled
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content =
+                            [ Radix.Spinner.new
+                                |> Radix.Spinner.withLoading
+                                |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                                |> Radix.Spinner.view
+                            , Html.text "Click me"
+                            ]
+                        , onClick = UserClickedButton
+                        }
+                        |> Radix.Button.withIsDisabled
                         |> Radix.Button.view
                     ]
                 ]

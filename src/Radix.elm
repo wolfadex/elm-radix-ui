@@ -198,6 +198,31 @@ radiusToString radius =
             "full"
 
 
+type Size
+    = Size1
+    | Size2
+    | Size3
+    | Size4
+
+
+sizeToCss : Size -> String
+sizeToCss size =
+    "rt-r-size-"
+        ++ (case size of
+                Size1 ->
+                    "1"
+
+                Size2 ->
+                    "2"
+
+                Size3 ->
+                    "3"
+
+                Size4 ->
+                    "4"
+           )
+
+
 view :
     { accentColor : Color
     , backgroundColor : Color
