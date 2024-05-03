@@ -6,6 +6,7 @@ import Html.Attributes
 import Html.Events
 import Radix
 import Radix.Button
+import Radix.Flex
 import Radix.Icon
 import Radix.Spinner
 
@@ -89,332 +90,365 @@ view model =
             , backgroundColor = model.theme
             , radius = Radix.Medium
             }
-            [ Html.div [ Html.Attributes.class "column" ]
-                [ Html.div [ Html.Attributes.class "row" ]
-                    [ Radix.Button.new
+            [ [ [ Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withSize Radix.Size1
+                    |> Radix.Button.withVariantSurface
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withVariantSurface
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withSize Radix.Size3
+                    |> Radix.Button.withVariantSurface
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withSize Radix.Size4
+                    |> Radix.Button.withVariantSurface
+                    |> Radix.Button.view
+                ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withAlignment Radix.AlignCenter
+                    |> Radix.Flex.view
+              , [ Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withVariantClassic
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withVariantSoft
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withVariantSurface
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withVariantOutline
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withVariantGhost
+                    |> Radix.Button.view
+                ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withAlignment Radix.AlignCenter
+                    |> Radix.Flex.view
+              , [ Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withAccentColor Radix.Indigo
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withAccentColor Radix.Cyan
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withAccentColor Radix.Orange
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withAccentColor Radix.Crimson
+                    |> Radix.Button.view
+                ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withAlignment Radix.AlignCenter
+                    |> Radix.Flex.view
+              , [ [ Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
-                        |> Radix.Button.withSize Radix.Size1
-                        |> Radix.Button.withVariantSurface
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withVariantSurface
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withSize Radix.Size3
-                        |> Radix.Button.withVariantSurface
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withSize Radix.Size4
-                        |> Radix.Button.withVariantSurface
-                        |> Radix.Button.view
-                    ]
-                , Html.div [ Html.Attributes.class "row" ]
-                    [ Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
+                        |> Radix.Button.withAccentColor Radix.Gray
                         |> Radix.Button.withVariantClassic
                         |> Radix.Button.view
-                    , Radix.Button.new
+                  , Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
+                        |> Radix.Button.withAccentColor Radix.Gray
                         |> Radix.Button.view
-                    , Radix.Button.new
+                  , Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
+                        |> Radix.Button.withAccentColor Radix.Gray
                         |> Radix.Button.withVariantSoft
                         |> Radix.Button.view
-                    , Radix.Button.new
+                  , Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
+                        |> Radix.Button.withAccentColor Radix.Gray
                         |> Radix.Button.withVariantSurface
                         |> Radix.Button.view
-                    , Radix.Button.new
+                  , Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
+                        |> Radix.Button.withAccentColor Radix.Gray
                         |> Radix.Button.withVariantOutline
                         |> Radix.Button.view
-                    , Radix.Button.new
+                  ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withAlignment Radix.AlignCenter
+                    |> Radix.Flex.view
+                , [ Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
-                        |> Radix.Button.withVariantGhost
+                        |> Radix.Button.withAccentColor Radix.Gray
+                        |> Radix.Button.withVariantClassic
+                        |> Radix.Button.withHighContrast
                         |> Radix.Button.view
-                    ]
-                , Html.div []
-                    [ Radix.Button.new
+                  , Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
-                        |> Radix.Button.withAccentColor Radix.Indigo
+                        |> Radix.Button.withAccentColor Radix.Gray
+                        |> Radix.Button.withHighContrast
                         |> Radix.Button.view
-                    , Radix.Button.new
+                  , Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
-                        |> Radix.Button.withAccentColor Radix.Cyan
+                        |> Radix.Button.withAccentColor Radix.Gray
+                        |> Radix.Button.withVariantSoft
+                        |> Radix.Button.withHighContrast
                         |> Radix.Button.view
-                    , Radix.Button.new
+                  , Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
-                        |> Radix.Button.withAccentColor Radix.Orange
+                        |> Radix.Button.withAccentColor Radix.Gray
+                        |> Radix.Button.withVariantSurface
+                        |> Radix.Button.withHighContrast
                         |> Radix.Button.view
-                    , Radix.Button.new
+                  , Radix.Button.new
                         { content = [ Html.text "Click me" ]
                         , onClick = UserClickedButton
                         }
-                        |> Radix.Button.withAccentColor Radix.Crimson
+                        |> Radix.Button.withAccentColor Radix.Gray
+                        |> Radix.Button.withVariantOutline
+                        |> Radix.Button.withHighContrast
                         |> Radix.Button.view
-                    ]
-                , Html.div [ Html.Attributes.class "column" ]
-                    [ Html.div [ Html.Attributes.class "row" ]
-                        [ Radix.Button.new
-                            { content = [ Html.text "Click me" ]
-                            , onClick = UserClickedButton
-                            }
-                            |> Radix.Button.withAccentColor Radix.Gray
-                            |> Radix.Button.withVariantClassic
-                            |> Radix.Button.view
-                        , Radix.Button.new
-                            { content = [ Html.text "Click me" ]
-                            , onClick = UserClickedButton
-                            }
-                            |> Radix.Button.withAccentColor Radix.Gray
-                            |> Radix.Button.view
-                        , Radix.Button.new
-                            { content = [ Html.text "Click me" ]
-                            , onClick = UserClickedButton
-                            }
-                            |> Radix.Button.withAccentColor Radix.Gray
-                            |> Radix.Button.withVariantSoft
-                            |> Radix.Button.view
-                        , Radix.Button.new
-                            { content = [ Html.text "Click me" ]
-                            , onClick = UserClickedButton
-                            }
-                            |> Radix.Button.withAccentColor Radix.Gray
-                            |> Radix.Button.withVariantSurface
-                            |> Radix.Button.view
-                        , Radix.Button.new
-                            { content = [ Html.text "Click me" ]
-                            , onClick = UserClickedButton
-                            }
-                            |> Radix.Button.withAccentColor Radix.Gray
-                            |> Radix.Button.withVariantOutline
-                            |> Radix.Button.view
-                        ]
-                    , Html.div [ Html.Attributes.class "row" ]
-                        [ Radix.Button.new
-                            { content = [ Html.text "Click me" ]
-                            , onClick = UserClickedButton
-                            }
-                            |> Radix.Button.withAccentColor Radix.Gray
-                            |> Radix.Button.withVariantClassic
-                            |> Radix.Button.withHighContrast
-                            |> Radix.Button.view
-                        , Radix.Button.new
-                            { content = [ Html.text "Click me" ]
-                            , onClick = UserClickedButton
-                            }
-                            |> Radix.Button.withAccentColor Radix.Gray
-                            |> Radix.Button.withHighContrast
-                            |> Radix.Button.view
-                        , Radix.Button.new
-                            { content = [ Html.text "Click me" ]
-                            , onClick = UserClickedButton
-                            }
-                            |> Radix.Button.withAccentColor Radix.Gray
-                            |> Radix.Button.withVariantSoft
-                            |> Radix.Button.withHighContrast
-                            |> Radix.Button.view
-                        , Radix.Button.new
-                            { content = [ Html.text "Click me" ]
-                            , onClick = UserClickedButton
-                            }
-                            |> Radix.Button.withAccentColor Radix.Gray
-                            |> Radix.Button.withVariantSurface
-                            |> Radix.Button.withHighContrast
-                            |> Radix.Button.view
-                        , Radix.Button.new
-                            { content = [ Html.text "Click me" ]
-                            , onClick = UserClickedButton
-                            }
-                            |> Radix.Button.withAccentColor Radix.Gray
-                            |> Radix.Button.withVariantOutline
-                            |> Radix.Button.withHighContrast
-                            |> Radix.Button.view
-                        ]
-                    ]
-                , Html.div []
-                    [ Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withRadius Radix.None
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withRadius Radix.Small
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withRadius Radix.Medium
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withRadius Radix.Large
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withRadius Radix.Full
-                        |> Radix.Button.view
-                    ]
-                , Html.div []
-                    [ Radix.Button.new
-                        { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.view
-                    ]
-                , Html.div []
-                    [ Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withIsLoading
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withIsLoading
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withIsLoading
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withIsLoading
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content = [ Html.text "Click me" ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withIsLoading
-                        |> Radix.Button.view
-                    ]
-                , Html.div []
-                    [ Radix.Button.new
-                        { content =
-                            [ Radix.Spinner.new
-                                |> Radix.Spinner.withLoading
-                                |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
-                                |> Radix.Spinner.view
-                            , Html.text "Click me"
-                            ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withIsDisabled
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content =
-                            [ Radix.Spinner.new
-                                |> Radix.Spinner.withLoading
-                                |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
-                                |> Radix.Spinner.view
-                            , Html.text "Click me"
-                            ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withIsDisabled
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content =
-                            [ Radix.Spinner.new
-                                |> Radix.Spinner.withLoading
-                                |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
-                                |> Radix.Spinner.view
-                            , Html.text "Click me"
-                            ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withIsDisabled
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content =
-                            [ Radix.Spinner.new
-                                |> Radix.Spinner.withLoading
-                                |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
-                                |> Radix.Spinner.view
-                            , Html.text "Click me"
-                            ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withIsDisabled
-                        |> Radix.Button.view
-                    , Radix.Button.new
-                        { content =
-                            [ Radix.Spinner.new
-                                |> Radix.Spinner.withLoading
-                                |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
-                                |> Radix.Spinner.view
-                            , Html.text "Click me"
-                            ]
-                        , onClick = UserClickedButton
-                        }
-                        |> Radix.Button.withIsDisabled
-                        |> Radix.Button.view
-                    ]
+                  ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withAlignment Radix.AlignCenter
+                    |> Radix.Flex.view
                 ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 1
+                    |> Radix.Flex.withDirection Radix.Flex.Column
+                    |> Radix.Flex.view
+              , [ Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withRadius Radix.None
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withRadius Radix.Small
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withRadius Radix.Medium
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withRadius Radix.Large
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withRadius Radix.Full
+                    |> Radix.Button.view
+                ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withAlignment Radix.AlignCenter
+                    |> Radix.Flex.view
+              , [ Radix.Button.new
+                    { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.view
+                ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withAlignment Radix.AlignCenter
+                    |> Radix.Flex.view
+              , [ Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withIsLoading
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withIsLoading
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withIsLoading
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withIsLoading
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content = [ Html.text "Click me" ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withIsLoading
+                    |> Radix.Button.view
+                ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withAlignment Radix.AlignCenter
+                    |> Radix.Flex.view
+              , [ Radix.Button.new
+                    { content =
+                        [ Radix.Spinner.new
+                            |> Radix.Spinner.withLoading
+                            |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                            |> Radix.Spinner.view
+                        , Html.text "Click me"
+                        ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withIsDisabled
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content =
+                        [ Radix.Spinner.new
+                            |> Radix.Spinner.withLoading
+                            |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                            |> Radix.Spinner.view
+                        , Html.text "Click me"
+                        ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withIsDisabled
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content =
+                        [ Radix.Spinner.new
+                            |> Radix.Spinner.withLoading
+                            |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                            |> Radix.Spinner.view
+                        , Html.text "Click me"
+                        ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withIsDisabled
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content =
+                        [ Radix.Spinner.new
+                            |> Radix.Spinner.withLoading
+                            |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                            |> Radix.Spinner.view
+                        , Html.text "Click me"
+                        ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withIsDisabled
+                    |> Radix.Button.view
+                , Radix.Button.new
+                    { content =
+                        [ Radix.Spinner.new
+                            |> Radix.Spinner.withLoading
+                            |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                            |> Radix.Spinner.view
+                        , Html.text "Click me"
+                        ]
+                    , onClick = UserClickedButton
+                    }
+                    |> Radix.Button.withIsDisabled
+                    |> Radix.Button.view
+                ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withAlignment Radix.AlignCenter
+                    |> Radix.Flex.view
+              ]
+                |> Radix.Flex.new
+                |> Radix.Flex.withGapScale 5
+                |> Radix.Flex.withDirection Radix.Flex.Column
+                |> Radix.Flex.view
             ]
         ]
     }

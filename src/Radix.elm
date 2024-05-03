@@ -223,6 +223,60 @@ sizeToCss size =
            )
 
 
+type Alignment
+    = AlignStart
+    | AlignCenter
+    | AlignEnd
+    | AlignBaseline
+    | AlignStretch
+
+
+alignmentToCss : Alignment -> String
+alignmentToCss alignment =
+    "rt-r-ai-"
+        ++ (case alignment of
+                AlignStart ->
+                    "start"
+
+                AlignCenter ->
+                    "center"
+
+                AlignEnd ->
+                    "end"
+
+                AlignBaseline ->
+                    "baseline"
+
+                AlignStretch ->
+                    "stretch"
+           )
+
+
+type Justify
+    = JustifyStart
+    | JustifyCenter
+    | JustifyEnd
+    | JustifyBetween
+
+
+justifyToCss : Justify -> String
+justifyToCss justify =
+    "rt-r-jc-"
+        ++ (case justify of
+                JustifyStart ->
+                    "start"
+
+                JustifyCenter ->
+                    "center"
+
+                JustifyEnd ->
+                    "end"
+
+                JustifyBetween ->
+                    "space-between"
+           )
+
+
 view :
     { accentColor : Color
     , backgroundColor : Color
