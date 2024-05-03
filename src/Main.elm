@@ -7,6 +7,7 @@ import Html.Events
 import Radix
 import Radix.Button
 import Radix.Flex
+import Radix.Heading
 import Radix.Icon
 import Radix.Spinner
 
@@ -64,33 +65,50 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "Hello World"
     , body =
-        [ Html.h1 []
-            [ Html.text "Elm Radix"
-            ]
-        , Radix.allColors
-            |> List.map
-                (\theme ->
-                    let
-                        themeStr =
-                            Radix.colorToString theme
-                    in
-                    Html.option
-                        [ Html.Attributes.value themeStr
-                        , Html.Events.onClick (UserSelectedTheme theme)
-                        ]
-                        [ Html.text themeStr ]
-                )
-            |> Html.select
-                [ Html.Attributes.value (Radix.colorToString model.theme)
-                ]
-        , Html.br [] []
-        , Html.br [] []
-        , Radix.view
+        [ Radix.view
             { accentColor = model.theme
             , backgroundColor = model.theme
             , radius = Radix.Medium
             }
-            [ [ [ Radix.Button.new
+            [ Radix.Heading.h1 "Elm Radix"
+                |> Radix.Heading.view
+            , Radix.allColors
+                |> List.map
+                    (\theme ->
+                        let
+                            themeStr =
+                                Radix.colorToString theme
+                        in
+                        Html.option
+                            [ Html.Attributes.value themeStr
+                            , Html.Events.onClick (UserSelectedTheme theme)
+                            ]
+                            [ Html.text themeStr ]
+                    )
+                |> Html.select
+                    [ Html.Attributes.value (Radix.colorToString model.theme)
+                    ]
+            , Radix.Heading.h2 "Headings"
+                |> Radix.Heading.view
+            , [ Radix.Heading.h1 "A Heading H1"
+                    |> Radix.Heading.view
+              , Radix.Heading.h2 "A Heading H2"
+                    |> Radix.Heading.view
+              , Radix.Heading.h3 "A Heading H3"
+                    |> Radix.Heading.view
+              , Radix.Heading.h4 "A Heading H4"
+                    |> Radix.Heading.view
+              , Radix.Heading.h5 "A Heading H5"
+                    |> Radix.Heading.view
+              , Radix.Heading.h6 "A Heading H6"
+                    |> Radix.Heading.view
+              ]
+                |> Radix.Flex.new
+                |> Radix.Flex.withDirection Radix.Flex.Column
+                |> Radix.Flex.view
+            , Radix.Heading.h2 "Button"
+                |> Radix.Heading.view
+            , [ [ Radix.Button.new
                     { content = [ Html.text "Click me" ]
                     , onClick = UserClickedButton
                     }
