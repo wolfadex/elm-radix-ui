@@ -157,30 +157,48 @@ viewSection label content =
 viewCheckboxes : Html Msg
 viewCheckboxes =
     Radix.Flex.new
-        [ Radix.Checkbox.new
-            { checked = True
-            , onChange = UserClickedCheckbox
-            }
-            |> Radix.Checkbox.view
-        , Radix.Checkbox.new
-            { checked = False
-            , onChange = UserClickedCheckbox
-            }
-            |> Radix.Checkbox.view
-        , Radix.Checkbox.new
-            { checked = True
-            , onChange = UserClickedCheckbox
-            }
-            |> Radix.Checkbox.withVariantSoft
-            |> Radix.Checkbox.view
-        , Radix.Checkbox.new
-            { checked = False
-            , onChange = UserClickedCheckbox
-            }
-            |> Radix.Checkbox.withVariantSoft
-            |> Radix.Checkbox.view
+        [ Radix.Flex.new
+            [ Radix.Checkbox.new
+                { checked = True
+                , onChange = UserClickedCheckbox
+                }
+                |> Radix.Checkbox.view
+            , Radix.Checkbox.new
+                { checked = False
+                , onChange = UserClickedCheckbox
+                }
+                |> Radix.Checkbox.view
+            , Radix.Checkbox.new
+                { checked = True
+                , onChange = UserClickedCheckbox
+                }
+                |> Radix.Checkbox.withVariantSoft
+                |> Radix.Checkbox.view
+            , Radix.Checkbox.new
+                { checked = False
+                , onChange = UserClickedCheckbox
+                }
+                |> Radix.Checkbox.withVariantSoft
+                |> Radix.Checkbox.view
+            ]
+            |> Radix.Flex.withGapScale 3
+            |> Radix.Flex.view
+        , Radix.Box.new
+            [ Radix.Checkbox.new
+                { checked = True
+                , onChange = UserClickedCheckbox
+                }
+                |> Radix.Checkbox.withContent
+                    [ Radix.Text.new [ Html.text "Check me, or don't. It's your choice! Or is it? Hmmm...." ]
+                        |> Radix.Text.view
+                    ]
+                |> Radix.Checkbox.view
+            ]
+            |> Radix.Box.withWidth "10rem"
+            |> Radix.Box.view
         ]
         |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withDirection Radix.Flex.Column
         |> Radix.Flex.view
 
 
