@@ -1,4 +1,4 @@
-module Radix.Flex exposing (..)
+module Radix.Grid exposing (..)
 
 import Html exposing (Html)
 import Html.Attributes
@@ -12,10 +12,11 @@ type Config msg
         { content : List (Html msg)
         , node : String
         , display : Maybe Radix.Display
-        , direction : Direction
+        , columns : Maybe Radix.Internal.EnumOrLiteral
+        , rows : Maybe Radix.Internal.EnumOrLiteral
+        , flow : Maybe Flow
         , align : Maybe Radix.Alignment
         , justify : Maybe Radix.Justify
-        , wrap : Maybe Wrapping
         , gap : Maybe Radix.Internal.EnumOrLiteral
         , layout : Radix.Layout.Layout
 
@@ -26,24 +27,32 @@ type Config msg
         }
 
 
-type Wrapping
-    = NoWrap
-    | Wrap
-    | WrapReverse
+type Flow
+    = Row
+    | Column
+    | Dense
+    | RowDense
+    | ColumnDense
 
 
-wrapToCss : Wrapping -> String
-wrapToCss wrap =
-    "rt-r-fw-wrap-"
-        ++ (case wrap of
-                NoWrap ->
-                    "nowrap"
+flowToCss : Flow -> String
+flowToCss flow =
+    "rt-r-gaf-"
+        ++ (case flow of
+                Row ->
+                    "row"
 
-                Wrap ->
-                    "wrap"
+                Column ->
+                    "column"
 
-                WrapReverse ->
-                    "wrap-reverse"
+                Dense ->
+                    "dense"
+
+                RowDense ->
+                    "row-dense"
+
+                ColumnDense ->
+                    "column-dense"
            )
 
 
@@ -53,10 +62,11 @@ new content =
         { content = content
         , node = "div"
         , display = Nothing
-        , direction = Row
+        , columns = Nothing
+        , rows = Nothing
+        , flow = Nothing
         , align = Nothing
         , justify = Nothing
-        , wrap = Nothing
         , gap = Nothing
         , layout = Radix.Layout.empty
 
@@ -117,39 +127,6 @@ withJustification justify (Config config) =
         { config
             | justify = Just justify
         }
-
-
-type Direction
-    = Row
-    | RowReverse
-    | Column
-    | ColumnReverse
-
-
-withDirection : Direction -> Config msg -> Config msg
-withDirection direction (Config config) =
-    Config
-        { config
-            | direction = direction
-        }
-
-
-directionToCss : Direction -> String
-directionToCss direction =
-    "rt-r-fd-"
-        ++ (case direction of
-                Row ->
-                    "row"
-
-                RowReverse ->
-                    "row-reverse"
-
-                Column ->
-                    "column"
-
-                ColumnReverse ->
-                    "column-reverse"
-           )
 
 
 
@@ -496,6 +473,46 @@ withCustomAttributes customAttributes (Config config) =
         }
 
 
+withFlow : Flow -> Config msg -> Config msg
+withFlow flow (Config config) =
+    Config
+        { config
+            | flow = Just flow
+        }
+
+
+withColumnsScale : Int -> Config msg -> Config msg
+withColumnsScale scale (Config config) =
+    Config
+        { config
+            | columns = Just (Radix.Internal.Enum scale)
+        }
+
+
+withColumnsLiteral : String -> Config msg -> Config msg
+withColumnsLiteral literal (Config config) =
+    Config
+        { config
+            | columns = Just (Radix.Internal.Literal literal)
+        }
+
+
+withRowsScale : Int -> Config msg -> Config msg
+withRowsScale scale (Config config) =
+    Config
+        { config
+            | rows = Just (Radix.Internal.Enum scale)
+        }
+
+
+withRowsLiteral : String -> Config msg -> Config msg
+withRowsLiteral literal (Config config) =
+    Config
+        { config
+            | rows = Just (Radix.Internal.Literal literal)
+        }
+
+
 
 -- VIEW
 
@@ -508,11 +525,13 @@ view (Config config) =
     in
     Html.node config.node
         ([ Html.Attributes.classList
-            ([ ( "rt-Flex", True )
+            ([ ( "rt-Grid", True )
              , Radix.Internal.classListMaybe
                 Radix.displayToCss
                 config.display
-             , ( directionToCss config.direction, True )
+             , Radix.Internal.classListMaybe
+                flowToCss
+                config.flow
              , case config.gap of
                 Nothing ->
                     ( "", False )
@@ -529,14 +548,55 @@ view (Config config) =
                 (\justify -> Radix.justifyToCss justify)
                 config.justify
              , Radix.Internal.classListMaybe
-                (\wrap -> wrapToCss wrap)
-                config.wrap
+                (\columns ->
+                    case columns of
+                        Radix.Internal.Enum scale ->
+                            "rt-r-gtc-" ++ String.fromInt scale
+
+                        Radix.Internal.Literal _ ->
+                            "rt-r-gtc"
+                )
+                config.columns
+             , Radix.Internal.classListMaybe
+                (\rows ->
+                    case rows of
+                        Radix.Internal.Enum scale ->
+                            "rt-r-gtr-" ++ String.fromInt scale
+
+                        Radix.Internal.Literal _ ->
+                            "rt-r-gtr"
+                )
+                config.rows
              ]
                 ++ layoutAttributes.classes
                 ++ Debug.log "custom classList" config.customClassList
             )
          , Radix.Internal.styles
-            (layoutAttributes.styles ++ config.customStyles)
+            (List.filterMap identity
+                [ Maybe.andThen
+                    (\columns ->
+                        case columns of
+                            Radix.Internal.Enum _ ->
+                                Nothing
+
+                            Radix.Internal.Literal literal ->
+                                Just ( "--grid-template-columns", literal )
+                    )
+                    config.columns
+                , Maybe.andThen
+                    (\rows ->
+                        case rows of
+                            Radix.Internal.Enum _ ->
+                                Nothing
+
+                            Radix.Internal.Literal literal ->
+                                Just ( "--grid-template-rows", literal )
+                    )
+                    config.rows
+                ]
+                ++ layoutAttributes.styles
+                ++ config.customStyles
+            )
          , Radix.Internal.attributeMaybe
             (\gap ->
                 case gap of

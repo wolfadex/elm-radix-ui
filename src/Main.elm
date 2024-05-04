@@ -8,6 +8,7 @@ import Radix
 import Radix.Box
 import Radix.Button
 import Radix.Flex
+import Radix.Grid
 import Radix.Heading
 import Radix.Icon
 import Radix.Layout
@@ -94,6 +95,10 @@ view model =
                 |> Radix.Heading.asH2
                 |> Radix.Heading.view
              , viewHeadings
+             , Radix.Heading.new "Text"
+                |> Radix.Heading.asH2
+                |> Radix.Heading.view
+             , viewText
              , Radix.Heading.new "Button"
                 |> Radix.Heading.asH2
                 |> Radix.Heading.view
@@ -106,6 +111,26 @@ view model =
             )
         ]
     }
+
+
+viewText : Html Msg
+viewText =
+    [ Radix.Text.new [ Html.text "A label" ]
+        |> Radix.Text.withWeight Radix.Text.Bold
+        |> Radix.Text.view
+    , Radix.Text.new [ Html.text "Another label" ]
+        |> Radix.Text.withWeight Radix.Text.Bold
+        |> Radix.Text.view
+    , Radix.Text.new [ Html.text "Some content" ]
+        |> Radix.Text.view
+    , Radix.Text.new [ Html.text "Even more content" ]
+        |> Radix.Text.view
+    ]
+        |> Radix.Grid.new
+        |> Radix.Grid.withGapScale 3
+        |> Radix.Grid.withColumnsScale 2
+        |> Radix.Grid.withWidth "30rem"
+        |> Radix.Grid.view
 
 
 viewHeadings : Html Msg
