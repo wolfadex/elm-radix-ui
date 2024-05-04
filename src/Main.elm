@@ -5,6 +5,7 @@ import Html exposing (Html)
 import Html.Attributes
 import Html.Events
 import Radix
+import Radix.Blockquote
 import Radix.Box
 import Radix.Button
 import Radix.Flex
@@ -99,6 +100,13 @@ view model =
                 |> Radix.Heading.asH2
                 |> Radix.Heading.view
              , viewText
+             , [ Radix.Blockquote.new "What is dead may never die\n- Game of Thrones"
+                    |> Radix.Blockquote.withWrap Radix.Text.Balance
+                    |> Radix.Blockquote.view
+               ]
+                |> Radix.Box.new
+                |> Radix.Box.withWidth "15rem"
+                |> Radix.Box.view
              , Radix.Heading.new "Button"
                 |> Radix.Heading.asH2
                 |> Radix.Heading.view
