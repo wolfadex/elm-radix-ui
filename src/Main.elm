@@ -70,41 +70,40 @@ view model =
     , body =
         [ Radix.view
             { accentColor = model.theme
-            , backgroundColor = model.theme
             , radius = Radix.Medium
             }
-            [ [ Radix.Heading.new "Elm Radix"
-                    |> Radix.Heading.view
-              , Radix.allColors
-                    |> List.map
-                        (\theme ->
-                            let
-                                themeStr =
-                                    Radix.colorToString theme
-                            in
-                            Html.option
-                                [ Html.Attributes.value themeStr
-                                , Html.Events.onClick (UserSelectedTheme theme)
-                                ]
-                                [ Html.text themeStr ]
-                        )
-                    |> Html.select
-                        [ Html.Attributes.value (Radix.colorToString model.theme)
-                        ]
-              , Radix.Heading.new "Headings"
-                    |> Radix.Heading.asH2
-                    |> Radix.Heading.view
-              , viewHeadings
-              , Radix.Heading.new "Button"
-                    |> Radix.Heading.asH2
-                    |> Radix.Heading.view
-              , viewButtons
-              ]
+            ([ Radix.Heading.new "Elm Radix"
+                |> Radix.Heading.view
+             , Radix.allColors
+                |> List.map
+                    (\theme ->
+                        let
+                            themeStr =
+                                Radix.colorToString theme
+                        in
+                        Html.option
+                            [ Html.Attributes.value themeStr
+                            , Html.Events.onClick (UserSelectedTheme theme)
+                            ]
+                            [ Html.text themeStr ]
+                    )
+                |> Html.select
+                    [ Html.Attributes.value (Radix.colorToString model.theme)
+                    ]
+             , Radix.Heading.new "Headings"
+                |> Radix.Heading.asH2
+                |> Radix.Heading.view
+             , viewHeadings
+             , Radix.Heading.new "Button"
+                |> Radix.Heading.asH2
+                |> Radix.Heading.view
+             , viewButtons
+             ]
                 |> Radix.Flex.new
                 |> Radix.Flex.withGapScale 5
                 |> Radix.Flex.withDirection Radix.Flex.Column
                 |> Radix.Flex.view
-            ]
+            )
         ]
     }
 

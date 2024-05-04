@@ -333,10 +333,9 @@ positionToCss position =
 
 view :
     { accentColor : Color
-    , backgroundColor : Color
     , radius : Radius
     }
-    -> List (Html msg)
+    -> Html msg
     -> Html msg
 view options content =
     Html.div
@@ -344,4 +343,4 @@ view options content =
         , Html.Attributes.attribute "data-radius" <| radiusToString options.radius
         , Html.Attributes.attribute "data-accent-color" <| colorToString options.accentColor
         ]
-        content
+        [ content ]
