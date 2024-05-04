@@ -13,6 +13,7 @@ import Radix.Button
 import Radix.Callout
 import Radix.Card
 import Radix.Checkbox
+import Radix.Code
 import Radix.DataList
 import Radix.DataList.Item
 import Radix.DataList.Label
@@ -198,17 +199,18 @@ viewDataList =
                         |> Radix.DataList.Label.withMinWidth "88px"
                 , value =
                     Radix.Flex.new
-                        [--     Radix.Text.new [ Html.text "u_2J89JSA4GJ" ]
-                         --     |> Radix.Text.withVariantGhost
-                         --     |> Radix.Text.view
-                         -- ,
-                         --   Radix.Button.new
-                         --     { content = [ Radix.Icon.copy |> Radix.Icon.view ]
-                         --     , onClick = UserClickedButton
-                         --     }
-                         --     |> Radix.Button.withSize Radix.Size1
-                         --     |> Radix.Button.withVariantGhost
-                         --     |> Radix.Button.view
+                        [ Radix.Code.new "u_2J89JSA4GJ"
+                            |> Radix.Code.withVariantGhost
+                            |> Radix.Code.view
+
+                        -- ,
+                        --   Radix.Button.new
+                        --     { content = [ Radix.Icon.copy |> Radix.Icon.view ]
+                        --     , onClick = UserClickedButton
+                        --     }
+                        --     |> Radix.Button.withSize Radix.Size1
+                        --     |> Radix.Button.withVariantGhost
+                        --     |> Radix.Button.view
                         ]
                         |> Radix.Flex.withAlignment Radix.AlignCenter
                         |> Radix.Flex.withGapScale 2
