@@ -3,6 +3,7 @@ module Radix.Spinner exposing (..)
 import Html exposing (Html)
 import Html.Attributes
 import Radix
+import Radix.Flex
 
 
 type Config msg
@@ -39,42 +40,59 @@ withIcon icon (Config config) =
 
 view : Config msg -> Html msg
 view (Config config) =
-    Html.span
-        [ Html.Attributes.classList
-            [ ( "rt-Flex", True )
-            , ( "rt-r-ai-center", True )
-            , ( "rt-r-jc-center", True )
-            , ( "rt-r-position-absolute", config.icon == Nothing )
-            , ( "rt-r-position-relative", config.icon /= Nothing )
-            , ( "rt-r-inset-0", config.icon == Nothing )
-            ]
-        ]
-        [ case config.icon of
-            Nothing ->
-                Html.text ""
+    [ case config.icon of
+        Nothing ->
+            Html.text ""
 
-            Just icon ->
-                Html.span
-                    [ Html.Attributes.style "display" "contents"
-                    , Html.Attributes.style "visibility" "hidden"
-                    , Html.Attributes.attribute "inert" ""
-                    , Html.Attributes.attribute "aria-hidden" "true"
-                    ]
-                    [ icon ]
-        , Html.span
-            [ Html.Attributes.classList
-                [ ( "rt-Spinner", True )
-                , ( "rt-Flex rt-r-ai-center rt-r-jc-center rt-r-position-absolute rt-r-inset-0", config.icon /= Nothing )
-                , ( Radix.sizeToCss config.size, True )
+        Just icon ->
+            Html.span
+                [ Html.Attributes.style "display" "contents"
+                , Html.Attributes.style "visibility" "hidden"
+                , Html.Attributes.attribute "inert" ""
+                , Html.Attributes.attribute "aria-hidden" "true"
                 ]
+                [ icon ]
+    , [ Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
+      , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
+      , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
+      , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
+      , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
+      , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
+      , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
+      , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
+      ]
+        |> Radix.Flex.new
+        |> Radix.Flex.withCustomClassList
+            [ ( "rt-Spinner", True )
+            , ( Radix.sizeToCss config.size, True )
             ]
-            [ Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
-            , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
-            , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
-            , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
-            , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
-            , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
-            , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
-            , Html.span [ Html.Attributes.class "rt-SpinnerLeaf" ] []
-            ]
-        ]
+        |> Radix.Flex.asSpan
+        |> (if config.icon /= Nothing then
+                Radix.Flex.withAlignment Radix.AlignCenter
+                    >> Radix.Flex.withJustification Radix.JustifyCenter
+                    >> Radix.Flex.withPosition Radix.Absolute
+                    >> Radix.Flex.withInsetScale 0
+
+            else
+                identity
+           )
+        |> Radix.Flex.view
+    ]
+        |> Radix.Flex.new
+        |> Radix.Flex.asSpan
+        |> Radix.Flex.withAlignment Radix.AlignCenter
+        |> Radix.Flex.withJustification Radix.JustifyCenter
+        |> Radix.Flex.withPosition
+            (if config.icon == Nothing then
+                Radix.Absolute
+
+             else
+                Radix.Relative
+            )
+        |> (if config.icon == Nothing then
+                Radix.Flex.withInsetScale 0
+
+            else
+                identity
+           )
+        |> Radix.Flex.view

@@ -18,6 +18,11 @@ type Config msg
         , wrap : Maybe Wrapping
         , gap : Maybe Radix.Internal.EnumOrLiteral
         , layout : Radix.Layout.Layout
+
+        --
+        , customClassList : List ( String, Bool )
+        , customStyles : List ( String, String )
+        , customAttributes : List (Html.Attribute msg)
         }
 
 
@@ -54,6 +59,11 @@ new content =
         , wrap = Nothing
         , gap = Nothing
         , layout = Radix.Layout.empty
+
+        --
+        , customClassList = []
+        , customStyles = []
+        , customAttributes = []
         }
 
 
@@ -234,6 +244,42 @@ withWidth : String -> Config msg -> Config msg
 withWidth width =
     withLayout
         (Radix.Layout.withWidth width)
+
+
+withMinWidth : String -> Config msg -> Config msg
+withMinWidth minWidth =
+    withLayout
+        (Radix.Layout.withMinWidth minWidth)
+
+
+withMaxWidth : String -> Config msg -> Config msg
+withMaxWidth maxWidth =
+    withLayout
+        (Radix.Layout.withMaxWidth maxWidth)
+
+
+withHeight : String -> Config msg -> Config msg
+withHeight height =
+    withLayout
+        (Radix.Layout.withHeight height)
+
+
+withMinHeight : String -> Config msg -> Config msg
+withMinHeight minHeight =
+    withLayout
+        (Radix.Layout.withMinHeight minHeight)
+
+
+withMaxHeight : String -> Config msg -> Config msg
+withMaxHeight maxHeight =
+    withLayout
+        (Radix.Layout.withMaxHeight maxHeight)
+
+
+withPosition : Radix.Position -> Config msg -> Config msg
+withPosition position =
+    withLayout
+        (Radix.Layout.withPosition position)
 
 
 withInsetScale : Int -> Config msg -> Config msg
@@ -426,6 +472,30 @@ withGridRowEndLiteral literal =
         (Radix.Layout.withGridRowEndLiteral literal)
 
 
+withCustomClassList : List ( String, Bool ) -> Config msg -> Config msg
+withCustomClassList customClassList (Config config) =
+    Config
+        { config
+            | customClassList = customClassList
+        }
+
+
+withCustomStyles : List ( String, String ) -> Config msg -> Config msg
+withCustomStyles customStyles (Config config) =
+    Config
+        { config
+            | customStyles = customStyles
+        }
+
+
+withCustomAttributes : List (Html.Attribute msg) -> Config msg -> Config msg
+withCustomAttributes customAttributes (Config config) =
+    Config
+        { config
+            | customAttributes = customAttributes
+        }
+
+
 
 -- VIEW
 
@@ -435,6 +505,9 @@ view (Config config) =
     let
         layoutAttributes =
             Radix.Layout.toAttributes config.layout
+
+        -- , customStyles : List ( String, String )
+        -- , customAttributes : List (tml.Attribute msg)
     in
     Html.node config.node
         ([ Html.Attributes.classList
@@ -463,9 +536,10 @@ view (Config config) =
                 config.wrap
              ]
                 ++ layoutAttributes.classes
+                ++ Debug.log "custom classList" config.customClassList
             )
          , Radix.Internal.styles
-            layoutAttributes.styles
+            (layoutAttributes.styles ++ config.customStyles)
          , Radix.Internal.attributeMaybe
             (\gap ->
                 case gap of
@@ -478,6 +552,7 @@ view (Config config) =
             config.gap
          ]
             ++ layoutAttributes.otherAttributes
+            ++ config.customAttributes
         )
         config.content
 
