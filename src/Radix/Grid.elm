@@ -532,15 +532,16 @@ view (Config config) =
              , Radix.Internal.classListMaybe
                 flowToCss
                 config.flow
-             , case config.gap of
-                Nothing ->
-                    ( "", False )
+             , Radix.Internal.classListMaybe
+                (\gap ->
+                    case gap of
+                        Radix.Internal.Enum scale ->
+                            "rt-r-gap-" ++ String.fromInt scale
 
-                Just (Radix.Internal.Enum scale) ->
-                    ( "rt-r-gap-" ++ String.fromInt scale, True )
-
-                Just (Radix.Internal.Literal literal) ->
-                    ( "", False )
+                        Radix.Internal.Literal _ ->
+                            "rt-r-gap"
+                )
+                config.gap
              , Radix.Internal.classListMaybe
                 (\alignment -> Radix.alignmentToCss alignment)
                 config.align
@@ -593,20 +594,20 @@ view (Config config) =
                                 Just ( "--grid-template-rows", literal )
                     )
                     config.rows
+                , Maybe.andThen
+                    (\gap ->
+                        case gap of
+                            Radix.Internal.Enum _ ->
+                                Nothing
+
+                            Radix.Internal.Literal literal ->
+                                Just ( "--gap", literal )
+                    )
+                    config.gap
                 ]
                 ++ layoutAttributes.styles
                 ++ config.customStyles
             )
-         , Radix.Internal.attributeMaybe
-            (\gap ->
-                case gap of
-                    Radix.Internal.Enum _ ->
-                        Html.Attributes.class ""
-
-                    Radix.Internal.Literal literal ->
-                        Html.Attributes.style "gap" literal
-            )
-            config.gap
          ]
             ++ layoutAttributes.otherAttributes
             ++ config.customAttributes

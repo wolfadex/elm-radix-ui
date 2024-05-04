@@ -1,4 +1,4 @@
-module Radix.Flex exposing (..)
+module Radix.Container exposing (..)
 
 import Html exposing (Html)
 import Html.Attributes
@@ -11,12 +11,9 @@ type Config msg
     = Config
         { content : List (Html msg)
         , node : String
+        , size : Int
         , display : Maybe Radix.Display
-        , direction : Direction
         , align : Maybe Radix.Alignment
-        , justify : Maybe Radix.Justify
-        , wrap : Maybe Wrapping
-        , gap : Maybe Radix.Internal.EnumOrLiteral
         , layout : Radix.Layout.Layout
 
         --
@@ -26,38 +23,14 @@ type Config msg
         }
 
 
-type Wrapping
-    = NoWrap
-    | Wrap
-    | WrapReverse
-
-
-wrapToCss : Wrapping -> String
-wrapToCss wrap =
-    "rt-r-fw-wrap-"
-        ++ (case wrap of
-                NoWrap ->
-                    "nowrap"
-
-                Wrap ->
-                    "wrap"
-
-                WrapReverse ->
-                    "wrap-reverse"
-           )
-
-
 new : List (Html msg) -> Config msg
 new content =
     Config
         { content = content
         , node = "div"
+        , size = 4
         , display = Nothing
-        , direction = Row
         , align = Nothing
-        , justify = Nothing
-        , wrap = Nothing
-        , gap = Nothing
         , layout = Radix.Layout.empty
 
         --
@@ -87,69 +60,12 @@ withDisplay display (Config config) =
         }
 
 
-withGapScale : Int -> Config msg -> Config msg
-withGapScale scale (Config config) =
-    Config
-        { config
-            | gap = Just (Radix.Internal.Enum scale)
-        }
-
-
-withGapLiteral : String -> Config msg -> Config msg
-withGapLiteral literal (Config config) =
-    Config
-        { config
-            | gap = Just (Radix.Internal.Literal literal)
-        }
-
-
 withAlignment : Radix.Alignment -> Config msg -> Config msg
 withAlignment alignment (Config config) =
     Config
         { config
             | align = Just alignment
         }
-
-
-withJustification : Radix.Justify -> Config msg -> Config msg
-withJustification justify (Config config) =
-    Config
-        { config
-            | justify = Just justify
-        }
-
-
-type Direction
-    = Row
-    | RowReverse
-    | Column
-    | ColumnReverse
-
-
-withDirection : Direction -> Config msg -> Config msg
-withDirection direction (Config config) =
-    Config
-        { config
-            | direction = direction
-        }
-
-
-directionToCss : Direction -> String
-directionToCss direction =
-    "rt-r-fd-"
-        ++ (case direction of
-                Row ->
-                    "row"
-
-                RowReverse ->
-                    "row-reverse"
-
-                Column ->
-                    "column"
-
-                ColumnReverse ->
-                    "column-reverse"
-           )
 
 
 
@@ -496,6 +412,30 @@ withCustomAttributes customAttributes (Config config) =
         }
 
 
+withSize1 : Config msg -> Config msg
+withSize1 (Config config) =
+    Config
+        { config
+            | size = 1
+        }
+
+
+withSize2 : Config msg -> Config msg
+withSize2 (Config config) =
+    Config
+        { config
+            | size = 2
+        }
+
+
+withSize3 : Config msg -> Config msg
+withSize3 (Config config) =
+    Config
+        { config
+            | size = 3
+        }
+
+
 
 -- VIEW
 
@@ -508,47 +448,21 @@ view (Config config) =
     in
     Html.node config.node
         ([ Html.Attributes.classList
-            ([ ( "rt-Flex", True )
+            ([ ( "rt-Container", True )
+             , ( "rt-r-size-" ++ String.fromInt config.size, True )
              , Radix.Internal.classListMaybe
                 Radix.displayToCss
                 config.display
-             , ( directionToCss config.direction, True )
-             , Radix.Internal.classListMaybe
-                (\gap ->
-                    case gap of
-                        Radix.Internal.Enum scale ->
-                            "rt-r-gap-" ++ String.fromInt scale
-
-                        Radix.Internal.Literal _ ->
-                            "rt-r-gap"
-                )
-                config.gap
              , Radix.Internal.classListMaybe
                 (\alignment -> Radix.alignmentToCss alignment)
                 config.align
-             , Radix.Internal.classListMaybe
-                (\justify -> Radix.justifyToCss justify)
-                config.justify
-             , Radix.Internal.classListMaybe
-                (\wrap -> wrapToCss wrap)
-                config.wrap
              ]
                 ++ layoutAttributes.classes
                 ++ Debug.log "custom classList" config.customClassList
             )
          , Radix.Internal.styles
             (List.filterMap identity
-                [ Maybe.andThen
-                    (\gap ->
-                        case gap of
-                            Radix.Internal.Enum _ ->
-                                Nothing
-
-                            Radix.Internal.Literal literal ->
-                                Just ( "--gap", literal )
-                    )
-                    config.gap
-                ]
+                []
                 ++ layoutAttributes.styles
                 ++ config.customStyles
             )
