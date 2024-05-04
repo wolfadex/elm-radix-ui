@@ -5,6 +5,7 @@ import Html exposing (Html)
 import Html.Attributes
 import Html.Events
 import Radix
+import Radix.Avatar
 import Radix.Blockquote
 import Radix.Box
 import Radix.Button
@@ -111,10 +112,23 @@ view model =
                 |> Radix.Heading.asH2
                 |> Radix.Heading.view
              , viewButtons
+             , Radix.Heading.new "Avatar"
+                |> Radix.Heading.asH2
+                |> Radix.Heading.view
+             , [ Radix.Avatar.new (Radix.Avatar.Initials "WS")
+                    |> Radix.Avatar.withSrc "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
+                    |> Radix.Avatar.view
+               , Radix.Avatar.new (Radix.Avatar.Initials "WS")
+                    |> Radix.Avatar.view
+               ]
+                |> Radix.Flex.new
+                |> Radix.Flex.withGapScale 3
+                |> Radix.Flex.view
              ]
                 |> Radix.Flex.new
                 |> Radix.Flex.withGapScale 5
                 |> Radix.Flex.withDirection Radix.Flex.Column
+                |> Radix.Flex.withPaddingBottomScale 5
                 |> Radix.Flex.view
             )
         ]
