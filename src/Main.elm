@@ -11,6 +11,7 @@ import Radix.Box
 import Radix.Button
 import Radix.Callout
 import Radix.Card
+import Radix.Checkbox
 import Radix.Flex
 import Radix.Grid
 import Radix.Heading
@@ -54,6 +55,7 @@ type Msg
     = UserSelectedTheme Radix.Color
     | UserClickedDarkToggle
     | UserClickedButton
+    | UserClickedCheckbox Bool
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -68,6 +70,9 @@ update msg model =
         UserClickedButton ->
             ( model, Cmd.none )
 
+        UserClickedCheckbox _ ->
+            ( model, Cmd.none )
+
 
 view : Model -> Browser.Document Msg
 view model =
@@ -77,68 +82,59 @@ view model =
             { accentColor = model.theme
             , radius = Radix.Medium
             }
-            ([ Radix.Heading.new "Elm Radix"
-                |> Radix.Heading.view
-             , Radix.allColors
-                |> List.map
-                    (\theme ->
-                        let
-                            themeStr =
-                                Radix.colorToString theme
-                        in
-                        Html.option
-                            [ Html.Attributes.value themeStr
-                            , Html.Events.onClick (UserSelectedTheme theme)
-                            ]
-                            [ Html.text themeStr ]
-                    )
-                |> Html.select
-                    [ Html.Attributes.value (Radix.colorToString model.theme)
-                    ]
-             , Radix.Heading.new "Headings"
-                |> Radix.Heading.asH2
-                |> Radix.Heading.view
-             , viewHeadings
-             , Radix.Heading.new "Text"
-                |> Radix.Heading.asH2
-                |> Radix.Heading.view
-             , viewText
-             , [ Radix.Blockquote.new "What is dead may never die\n- Game of Thrones"
+            ([ [ Radix.Heading.new "Elm Radix"
+                    |> Radix.Heading.view
+               , Radix.allColors
+                    |> List.map
+                        (\theme ->
+                            let
+                                themeStr =
+                                    Radix.colorToString theme
+                            in
+                            Html.option
+                                [ Html.Attributes.value themeStr
+                                , Html.Events.onClick (UserSelectedTheme theme)
+                                ]
+                                [ Html.text themeStr ]
+                        )
+                    |> Html.select
+                        [ Html.Attributes.value (Radix.colorToString model.theme)
+                        ]
+               ]
+             , viewSection "Headings" viewHeadings
+             , viewSection "Text" viewText
+             , viewSection "Blockquote"
+                ([ Radix.Blockquote.new "What is dead may never die\n- Game of Thrones"
                     |> Radix.Blockquote.withWrap Radix.Text.Balance
                     |> Radix.Blockquote.view
-               ]
-                |> Radix.Box.new
-                |> Radix.Box.withWidth "15rem"
-                |> Radix.Box.view
-             , Radix.Heading.new "Avatar"
-                |> Radix.Heading.asH2
-                |> Radix.Heading.view
-             , [ Radix.Avatar.new (Radix.Avatar.Initials "WS")
+                 ]
+                    |> Radix.Box.new
+                    |> Radix.Box.withWidth "15rem"
+                    |> Radix.Box.view
+                )
+             , viewSection "Avatar"
+                ([ Radix.Avatar.new (Radix.Avatar.Initials "WS")
                     |> Radix.Avatar.withSrc "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
                     |> Radix.Avatar.view
-               , Radix.Avatar.new (Radix.Avatar.Initials "WS")
+                 , Radix.Avatar.new (Radix.Avatar.Initials "WS")
                     |> Radix.Avatar.view
-               ]
-                |> Radix.Flex.new
-                |> Radix.Flex.withGapScale 3
-                |> Radix.Flex.view
-             , Radix.Heading.new "Button"
-                |> Radix.Heading.asH2
-                |> Radix.Heading.view
-             , viewButtons
-             , Radix.Heading.new "Callout"
-                |> Radix.Heading.asH2
-                |> Radix.Heading.view
-             , Radix.Callout.new
-                { content = [ Html.text "This is a callout" ]
-                , icon = Radix.Icon.infoCircled 15
-                }
-                |> Radix.Callout.view
-             , Radix.Heading.new "Card"
-                |> Radix.Heading.asH2
-                |> Radix.Heading.view
-             , viewCard
+                 ]
+                    |> Radix.Flex.new
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.view
+                )
+             , viewSection "Button" viewButtons
+             , viewSection "Callout"
+                (Radix.Callout.new
+                    { content = [ Html.text "This is a callout" ]
+                    , icon = Radix.Icon.infoCircled |> Radix.Icon.view
+                    }
+                    |> Radix.Callout.view
+                )
+             , viewSection "Card" viewCard
+             , viewSection "Checkbox" viewCheckboxes
              ]
+                |> List.concat
                 |> Radix.Flex.new
                 |> Radix.Flex.withGapScale 5
                 |> Radix.Flex.withDirection Radix.Flex.Column
@@ -147,6 +143,45 @@ view model =
             )
         ]
     }
+
+
+viewSection : String -> Html Msg -> List (Html Msg)
+viewSection label content =
+    [ Radix.Heading.new label
+        |> Radix.Heading.asH2
+        |> Radix.Heading.view
+    , content
+    ]
+
+
+viewCheckboxes : Html Msg
+viewCheckboxes =
+    Radix.Flex.new
+        [ Radix.Checkbox.new
+            { checked = True
+            , onChange = UserClickedCheckbox
+            }
+            |> Radix.Checkbox.view
+        , Radix.Checkbox.new
+            { checked = False
+            , onChange = UserClickedCheckbox
+            }
+            |> Radix.Checkbox.view
+        , Radix.Checkbox.new
+            { checked = True
+            , onChange = UserClickedCheckbox
+            }
+            |> Radix.Checkbox.withVariantSoft
+            |> Radix.Checkbox.view
+        , Radix.Checkbox.new
+            { checked = False
+            , onChange = UserClickedCheckbox
+            }
+            |> Radix.Checkbox.withVariantSoft
+            |> Radix.Checkbox.view
+        ]
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.view
 
 
 viewCard : Html Msg
@@ -517,27 +552,27 @@ viewButtons =
         |> Radix.Flex.withAlignment Radix.AlignCenter
         |> Radix.Flex.view
     , [ Radix.Button.new
-            { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
+            { content = [ Radix.Icon.bookmark |> Radix.Icon.view, Html.text "Click me" ]
             , onClick = UserClickedButton
             }
             |> Radix.Button.view
       , Radix.Button.new
-            { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
+            { content = [ Radix.Icon.bookmark |> Radix.Icon.view, Html.text "Click me" ]
             , onClick = UserClickedButton
             }
             |> Radix.Button.view
       , Radix.Button.new
-            { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
+            { content = [ Radix.Icon.bookmark |> Radix.Icon.view, Html.text "Click me" ]
             , onClick = UserClickedButton
             }
             |> Radix.Button.view
       , Radix.Button.new
-            { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
+            { content = [ Radix.Icon.bookmark |> Radix.Icon.view, Html.text "Click me" ]
             , onClick = UserClickedButton
             }
             |> Radix.Button.view
       , Radix.Button.new
-            { content = [ Radix.Icon.bookmark 15, Html.text "Click me" ]
+            { content = [ Radix.Icon.bookmark |> Radix.Icon.view, Html.text "Click me" ]
             , onClick = UserClickedButton
             }
             |> Radix.Button.view
@@ -585,7 +620,7 @@ viewButtons =
             { content =
                 [ Radix.Spinner.new
                     |> Radix.Spinner.withLoading
-                    |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                    |> Radix.Spinner.withIcon (Radix.Icon.bookmark |> Radix.Icon.view)
                     |> Radix.Spinner.view
                 , Html.text "Click me"
                 ]
@@ -597,7 +632,7 @@ viewButtons =
             { content =
                 [ Radix.Spinner.new
                     |> Radix.Spinner.withLoading
-                    |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                    |> Radix.Spinner.withIcon (Radix.Icon.bookmark |> Radix.Icon.view)
                     |> Radix.Spinner.view
                 , Html.text "Click me"
                 ]
@@ -609,7 +644,7 @@ viewButtons =
             { content =
                 [ Radix.Spinner.new
                     |> Radix.Spinner.withLoading
-                    |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                    |> Radix.Spinner.withIcon (Radix.Icon.bookmark |> Radix.Icon.view)
                     |> Radix.Spinner.view
                 , Html.text "Click me"
                 ]
@@ -621,7 +656,7 @@ viewButtons =
             { content =
                 [ Radix.Spinner.new
                     |> Radix.Spinner.withLoading
-                    |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                    |> Radix.Spinner.withIcon (Radix.Icon.bookmark |> Radix.Icon.view)
                     |> Radix.Spinner.view
                 , Html.text "Click me"
                 ]
@@ -633,7 +668,7 @@ viewButtons =
             { content =
                 [ Radix.Spinner.new
                     |> Radix.Spinner.withLoading
-                    |> Radix.Spinner.withIcon (Radix.Icon.bookmark 15)
+                    |> Radix.Spinner.withIcon (Radix.Icon.bookmark |> Radix.Icon.view)
                     |> Radix.Spinner.view
                 , Html.text "Click me"
                 ]
