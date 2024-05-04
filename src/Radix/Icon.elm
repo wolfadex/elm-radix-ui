@@ -9,6 +9,10 @@ import Svg exposing (Svg)
 import Svg.Attributes
 
 
+
+-- CREATE
+
+
 type Config msg
     = Config
         { symbol : ( List (Svg.Attribute msg), List (Svg msg) )
@@ -28,6 +32,10 @@ new attrs_ children_ =
         }
 
 
+
+-- MODIFY
+
+
 withSize : Int -> Config msg -> Config msg
 withSize size_ (Config config) =
     Config { config | size = size_ }
@@ -41,6 +49,10 @@ withCustomClassList customClassList_ (Config config) =
 withCustomAttributes : List (Svg.Attribute msg) -> Config msg -> Config msg
 withCustomAttributes customAttributes_ (Config config) =
     Config { config | customAttributes = customAttributes_ }
+
+
+
+-- VIEW
 
 
 view : Config msg -> Html msg
@@ -68,6 +80,10 @@ view (Config config) =
             ++ config.customAttributes
         )
         children_
+
+
+
+-- ICONS
 
 
 accessibility : Config msg
