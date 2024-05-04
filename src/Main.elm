@@ -5,10 +5,12 @@ import Html exposing (Html)
 import Html.Attributes
 import Html.Events
 import Radix
+import Radix.Box
 import Radix.Button
 import Radix.Flex
 import Radix.Heading
 import Radix.Icon
+import Radix.Layout
 import Radix.Spinner
 import Radix.Text
 
@@ -143,20 +145,24 @@ viewHeadings =
         |> Radix.Flex.withDirection Radix.Flex.Column
         |> Radix.Flex.withGapScale 1
         |> Radix.Flex.view
-    , [ Radix.Heading.new "Left"
+    , [ [ Radix.Heading.new "Left"
             |> Radix.Heading.withAlignment Radix.Text.Left
             |> Radix.Heading.view
-      , Radix.Heading.new "Center"
+        , Radix.Heading.new "Center"
             |> Radix.Heading.withAlignment Radix.Text.Center
             |> Radix.Heading.view
-      , Radix.Heading.new "Right"
+        , Radix.Heading.new "Right"
             |> Radix.Heading.withAlignment Radix.Text.Right
             |> Radix.Heading.view
+        ]
+            |> Radix.Flex.new
+            |> Radix.Flex.withDirection Radix.Flex.Column
+            |> Radix.Flex.withGapScale 1
+            |> Radix.Flex.view
       ]
-        |> Radix.Flex.new
-        |> Radix.Flex.withDirection Radix.Flex.Column
-        |> Radix.Flex.withGapScale 1
-        |> Radix.Flex.view
+        |> Radix.Box.new
+        |> Radix.Box.withWidth "20rem"
+        |> Radix.Box.view
     , [ Radix.Heading.new "Indigo"
             |> Radix.Heading.withColor Radix.Indigo
             |> Radix.Heading.view

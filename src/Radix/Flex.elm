@@ -10,7 +10,7 @@ type Config msg
     = Config
         { content : List (Html msg)
         , node : String
-        , gap : Maybe EnumOrLiteral
+        , gap : Maybe Radix.Internal.EnumOrLiteral
         , align : Maybe Radix.Alignment
         , justify : Maybe Radix.Justify
         , direction : Direction
@@ -39,11 +39,6 @@ wrapToCss wrap =
            )
 
 
-type EnumOrLiteral
-    = Enum Int
-    | Literal String
-
-
 new : List (Html msg) -> Config msg
 new content =
     Config
@@ -69,7 +64,7 @@ withGapScale : Int -> Config msg -> Config msg
 withGapScale scale (Config config) =
     Config
         { config
-            | gap = Just (Enum scale)
+            | gap = Just (Radix.Internal.Enum scale)
         }
 
 
@@ -77,7 +72,7 @@ withGapLiteral : String -> Config msg -> Config msg
 withGapLiteral literal (Config config) =
     Config
         { config
-            | gap = Just (Literal literal)
+            | gap = Just (Radix.Internal.Literal literal)
         }
 
 
@@ -140,10 +135,10 @@ view (Config config) =
                 Nothing ->
                     ( "", False )
 
-                Just (Enum scale) ->
+                Just (Radix.Internal.Enum scale) ->
                     ( "rt-r-gap-" ++ String.fromInt scale, True )
 
-                Just (Literal literal) ->
+                Just (Radix.Internal.Literal literal) ->
                     ( "", False )
             , Radix.Internal.classListMaybe
                 (\alignment -> Radix.alignmentToCss alignment)
@@ -158,10 +153,10 @@ view (Config config) =
         , Radix.Internal.attributeMaybe
             (\gap ->
                 case gap of
-                    Enum _ ->
+                    Radix.Internal.Enum _ ->
                         Html.Attributes.class ""
 
-                    Literal literal ->
+                    Radix.Internal.Literal literal ->
                         Html.Attributes.style "gap" literal
             )
             config.gap

@@ -277,6 +277,60 @@ justifyToCss justify =
            )
 
 
+type Display
+    = DisplayNone
+    | Inline
+    | InlineBlock
+    | Block
+
+
+displayToCss : Display -> String
+displayToCss display =
+    "rt-r-display-"
+        ++ (case display of
+                DisplayNone ->
+                    "none"
+
+                Inline ->
+                    "inline"
+
+                InlineBlock ->
+                    "inline-block"
+
+                Block ->
+                    "block"
+           )
+
+
+type Position
+    = Static
+    | Relative
+    | Absolute
+    | Fixed
+    | Sticky
+
+
+positionToCss : Position -> String
+positionToCss position =
+    "rt-r-position-"
+        ++ (case position of
+                Static ->
+                    "static"
+
+                Relative ->
+                    "relative"
+
+                Absolute ->
+                    "absolute"
+
+                Fixed ->
+                    "fixed"
+
+                Sticky ->
+                    "sticky"
+           )
+
+
 view :
     { accentColor : Color
     , backgroundColor : Color
