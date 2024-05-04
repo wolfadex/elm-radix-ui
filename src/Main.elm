@@ -9,6 +9,7 @@ import Radix.Avatar
 import Radix.Blockquote
 import Radix.Box
 import Radix.Button
+import Radix.Callout
 import Radix.Flex
 import Radix.Grid
 import Radix.Heading
@@ -108,10 +109,6 @@ view model =
                 |> Radix.Box.new
                 |> Radix.Box.withWidth "15rem"
                 |> Radix.Box.view
-             , Radix.Heading.new "Button"
-                |> Radix.Heading.asH2
-                |> Radix.Heading.view
-             , viewButtons
              , Radix.Heading.new "Avatar"
                 |> Radix.Heading.asH2
                 |> Radix.Heading.view
@@ -124,6 +121,18 @@ view model =
                 |> Radix.Flex.new
                 |> Radix.Flex.withGapScale 3
                 |> Radix.Flex.view
+             , Radix.Heading.new "Button"
+                |> Radix.Heading.asH2
+                |> Radix.Heading.view
+             , viewButtons
+             , Radix.Heading.new "Callout"
+                |> Radix.Heading.asH2
+                |> Radix.Heading.view
+             , Radix.Callout.new
+                { content = [ Html.text "This is a callout" ]
+                , icon = Radix.Icon.infoCircled 15
+                }
+                |> Radix.Callout.view
              ]
                 |> Radix.Flex.new
                 |> Radix.Flex.withGapScale 5

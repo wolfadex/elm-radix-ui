@@ -1,4 +1,4 @@
-module Radix.Badge exposing (..)
+module Radix.Callout exposing (..)
 
 import Html exposing (Html)
 import Html.Attributes
@@ -9,18 +9,18 @@ import Radix.Text
 
 type Config msg
     = Config
-        { content : String
+        { content : List (Html msg)
+        , icon : Html msg
         , size : Int
         , variant : Variant
         , color : Maybe Radix.Color
         , isHighContrast : Bool
-        , radius : Maybe Radix.Radius
+        , isAlert : Bool
         }
 
 
 type Variant
-    = Solid
-    | Soft
+    = Soft
     | Surface
     | Outline
 
@@ -28,9 +28,6 @@ type Variant
 variantToCss : Variant -> String
 variantToCss variant =
     case variant of
-        Solid ->
-            "rt-variant-solid"
-
         Soft ->
             "rt-variant-soft"
 
@@ -41,31 +38,27 @@ variantToCss variant =
             "rt-variant-outline"
 
 
-new : String -> Config msg
-new content =
+new : { content : List (Html msg), icon : Html msg } -> Config msg
+new options =
     Config
-        { content = content
-        , size = 1
+        { content = options.content
+        , icon = options.icon
+        , size = 2
         , variant = Soft
         , color = Nothing
         , isHighContrast = False
-        , radius = Nothing
+        , isAlert = False
         }
 
 
-withSize2 : Config msg -> Config msg
-withSize2 (Config config) =
-    Config { config | size = 2 }
+withSize1 : Config msg -> Config msg
+withSize1 (Config config) =
+    Config { config | size = 1 }
 
 
 withSize3 : Config msg -> Config msg
 withSize3 (Config config) =
     Config { config | size = 3 }
-
-
-withVariantSolid : Config msg -> Config msg
-withVariantSolid (Config config) =
-    Config { config | variant = Solid }
 
 
 withVariantSurface : Config msg -> Config msg
@@ -83,21 +76,21 @@ withColor color (Config config) =
     Config { config | color = Just color }
 
 
-withRadius : Radix.Radius -> Config msg -> Config msg
-withRadius radius (Config config) =
-    Config { config | radius = Just radius }
-
-
 withHighContrast : Config msg -> Config msg
 withHighContrast (Config config) =
     Config { config | isHighContrast = True }
+
+
+withIsAlert : Config msg -> Config msg
+withIsAlert (Config config) =
+    Config { config | isAlert = True }
 
 
 view : Config msg -> Html msg
 view (Config config) =
     Html.span
         [ Html.Attributes.classList
-            [ ( "rt-Badge", True )
+            [ ( "rt-CalloutRoot", True )
             , ( variantToCss config.variant, True )
             , ( "rt-r-size-" ++ String.fromInt config.size, True )
             , ( "rt-high-contrast", config.isHighContrast )
@@ -107,10 +100,24 @@ view (Config config) =
                 Html.Attributes.attribute "data-accent-color" (Radix.colorToString color)
             )
             config.color
-        , Radix.Internal.attributeMaybe
-            (\radius ->
-                Html.Attributes.attribute "data-radius" <| Radix.radiusToString radius
-            )
-            config.radius
+        , Html.Attributes.attribute "role" "alert"
+            |> Radix.Internal.attributeIf config.isAlert
         ]
-        [ Html.text config.content ]
+        [ Html.div
+            [ Html.Attributes.classList
+                [ ( "rt-Text", True )
+                , ( "rt-CalloutIcon", True )
+                , ( variantToCss config.variant, True )
+                , ( "rt-r-size-" ++ String.fromInt config.size, True )
+                ]
+            ]
+            [ config.icon ]
+        , Html.p
+            [ Html.Attributes.classList
+                [ ( "rt-Text", True )
+                , ( "rt-CalloutText", True )
+                , ( "rt-r-size-" ++ String.fromInt config.size, True )
+                ]
+            ]
+            config.content
+        ]
