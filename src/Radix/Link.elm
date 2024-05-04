@@ -19,6 +19,7 @@ type Config msg
         , trim : Maybe Radix.Text.Trim
         , wrap : Maybe Radix.Text.Wrap
         , underline : Underline
+        , openInNewTab : Bool
         }
 
 
@@ -60,6 +61,7 @@ new options =
         , trim = Nothing
         , wrap = Nothing
         , underline = Auto
+        , openInNewTab = False
         }
 
 
@@ -119,11 +121,20 @@ withWrap wrap (Config config) =
         }
 
 
+withOpenInNewTab : Config msg -> Config msg
+withOpenInNewTab (Config config) =
+    Config
+        { config
+            | openInNewTab = True
+        }
+
+
 view : Config msg -> Html msg
 view (Config config) =
     Html.a
         [ Html.Attributes.classList
             [ ( "rt-Text", True )
+            , ( "rt-Link", True )
             , ( "rt-truncate", config.truncate )
             , ( "rt-high-contrast", config.isHighContrast )
             , ( underlineToCss config.underline, True )
@@ -144,5 +155,7 @@ view (Config config) =
             (\color -> Html.Attributes.attribute "data-accent-color" (Radix.colorToString color))
             config.color
         , Html.Attributes.href config.href
+        , Html.Attributes.target "_blank"
+            |> Radix.Internal.attributeIf config.openInNewTab
         ]
         config.content

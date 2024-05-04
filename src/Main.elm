@@ -6,17 +6,22 @@ import Html.Attributes
 import Html.Events
 import Radix
 import Radix.Avatar
+import Radix.Badge
 import Radix.Blockquote
 import Radix.Box
 import Radix.Button
 import Radix.Callout
 import Radix.Card
 import Radix.Checkbox
+import Radix.DataList
+import Radix.DataList.Item
+import Radix.DataList.Label
 import Radix.Flex
 import Radix.Grid
 import Radix.Heading
 import Radix.Icon
 import Radix.Layout
+import Radix.Link
 import Radix.Spinner
 import Radix.Text
 
@@ -133,6 +138,7 @@ view model =
                 )
              , viewSection "Card" viewCard
              , viewSection "Checkbox" viewCheckboxes
+             , viewSection "DataList" viewDataList
              ]
                 |> List.concat
                 |> Radix.Flex.new
@@ -152,6 +158,92 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewDataList : Html Msg
+viewDataList =
+    -- <DataList.Root>
+    --   <DataList.Item>
+    --     <DataList.Label minWidth="88px">ID</DataList.Label>
+    --     <DataList.Value>
+    --       <Flex align="center" gap="2">
+    --         <Code variant="ghost">u_2J89JSA4GJ</Code>
+    --         <IconButton
+    --           size="1"
+    --           aria-label="Copy value"
+    --           color="gray"
+    --           variant="ghost"
+    --         >
+    --           <CopyIcon />
+    --         </IconButton>
+    --       </Flex>
+    --     </DataList.Value>
+    --   </DataList.Item>
+    -- </DataList.Root>
+    Radix.Flex.new
+        [ Radix.DataList.new
+            [ Radix.DataList.Item.new
+                { label =
+                    Radix.DataList.Label.new "Status"
+                        |> Radix.DataList.Label.withMinWidth "88px"
+                , value =
+                    Radix.Badge.new "Authorized"
+                        |> Radix.Badge.withColor Radix.Jade
+                        |> Radix.Badge.withRadius Radix.Full
+                        |> Radix.Badge.view
+                }
+            , Radix.DataList.Item.new
+                { label =
+                    Radix.DataList.Label.new "ID"
+                        |> Radix.DataList.Label.withMinWidth "88px"
+                , value =
+                    Radix.Flex.new
+                        [--     Radix.Text.new [ Html.text "u_2J89JSA4GJ" ]
+                         --     |> Radix.Text.withVariantGhost
+                         --     |> Radix.Text.view
+                         -- ,
+                         --   Radix.Button.new
+                         --     { content = [ Radix.Icon.copy |> Radix.Icon.view ]
+                         --     , onClick = UserClickedButton
+                         --     }
+                         --     |> Radix.Button.withSize Radix.Size1
+                         --     |> Radix.Button.withVariantGhost
+                         --     |> Radix.Button.view
+                        ]
+                        |> Radix.Flex.withAlignment Radix.AlignCenter
+                        |> Radix.Flex.withGapScale 2
+                        |> Radix.Flex.view
+                }
+            , Radix.DataList.Item.new
+                { label =
+                    Radix.DataList.Label.new "Name"
+                        |> Radix.DataList.Label.withMinWidth "88px"
+                , value =
+                    Radix.Text.new [ Html.text "Vlad Moroz" ]
+                        |> Radix.Text.view
+                }
+            , Radix.DataList.Item.new
+                { label =
+                    Radix.DataList.Label.new "Email"
+                        |> Radix.DataList.Label.withMinWidth "88px"
+                , value =
+                    Radix.Link.new { href = "mailto:vlad@workos.com", content = [ Html.text "vlad@workos.com" ] }
+                        |> Radix.Link.view
+                }
+            , Radix.DataList.Item.new
+                { label =
+                    Radix.DataList.Label.new "Company"
+                        |> Radix.DataList.Label.withMinWidth "88px"
+                , value =
+                    Radix.Link.new { href = "https://workos.com", content = [ Html.text "WorkOS" ] }
+                        |> Radix.Link.withOpenInNewTab
+                        |> Radix.Link.view
+                }
+            ]
+            |> Radix.DataList.view
+        ]
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.view
 
 
 viewCheckboxes : Html Msg
