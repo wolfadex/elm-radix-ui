@@ -10,6 +10,7 @@ import Radix.Blockquote
 import Radix.Box
 import Radix.Button
 import Radix.Callout
+import Radix.Card
 import Radix.Flex
 import Radix.Grid
 import Radix.Heading
@@ -133,6 +134,10 @@ view model =
                 , icon = Radix.Icon.infoCircled 15
                 }
                 |> Radix.Callout.view
+             , Radix.Heading.new "Card"
+                |> Radix.Heading.asH2
+                |> Radix.Heading.view
+             , viewCard
              ]
                 |> Radix.Flex.new
                 |> Radix.Flex.withGapScale 5
@@ -142,6 +147,60 @@ view model =
             )
         ]
     }
+
+
+viewCard : Html Msg
+viewCard =
+    --       <Box maxWidth="240px">
+    --   <Card>
+    --     <Flex gap="3" align="center">
+    --       <Avatar
+    --         size="3"
+    --         src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop"
+    --         radius="full"
+    --         fallback="T"
+    --       />
+    --       <Box>
+    --         <Text as="div" size="2" weight="bold">
+    --           Teodros Girmay
+    --         </Text>
+    --         <Text as="div" size="2" color="gray">
+    --           Engineering
+    --         </Text>
+    --       </Box>
+    --     </Flex>
+    --   </Card>
+    -- </Box>
+    Radix.Box.new
+        [ Radix.Card.new
+            [ Radix.Flex.new
+                [ Radix.Avatar.new (Radix.Avatar.Initials "T")
+                    |> Radix.Avatar.withSize 3
+                    |> Radix.Avatar.withSrc "https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.67&fp-y=0.5&fp-z=1.4&fit=crop"
+                    |> Radix.Avatar.withRadius Radix.Full
+                    |> Radix.Avatar.view
+                , Radix.Box.new
+                    [ Radix.Text.new [ Html.text "Teodros Girmay" ]
+                        |> Radix.Text.asDiv
+                        |> Radix.Text.withSize 2
+                        |> Radix.Text.withWeight Radix.Text.Bold
+                        |> Radix.Text.view
+                    , Radix.Text.new [ Html.text "Engineering" ]
+                        |> Radix.Text.asDiv
+                        |> Radix.Text.withSize 2
+                        |> Radix.Text.withColor Radix.Gray
+                        |> Radix.Text.view
+                    ]
+                    |> Radix.Box.view
+                ]
+                |> Radix.Flex.withGapScale 3
+                |> Radix.Flex.withAlignment Radix.AlignCenter
+                |> Radix.Flex.view
+            ]
+            |> Radix.Card.view
+        ]
+        |> Radix.Box.withWidth "240px"
+        |> Radix.Box.view
 
 
 viewText : Html Msg
