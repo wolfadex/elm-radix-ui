@@ -438,14 +438,14 @@ view (Config config) =
     in
     Html.node config.node
         ([ Html.Attributes.classList
-            ([ ( "rt-Container", True )
+            ([ ( "rt-Section", True )
              , ( "rt-r-size-" ++ String.fromInt config.size, True )
              , Radix.Internal.classListMaybe
                 Radix.displayToCss
                 config.display
              ]
                 ++ layoutAttributes.classes
-                ++ Debug.log "custom classList" config.customClassList
+                ++ config.customClassList
             )
          , Radix.Internal.styles
             (List.filterMap identity

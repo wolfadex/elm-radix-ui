@@ -458,7 +458,7 @@ view (Config config) =
                 config.align
              ]
                 ++ layoutAttributes.classes
-                ++ Debug.log "custom classList" config.customClassList
+                ++ config.customClassList
             )
          , Radix.Internal.styles
             (List.filterMap identity
