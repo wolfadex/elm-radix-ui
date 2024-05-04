@@ -21,6 +21,7 @@ import Radix.Flex
 import Radix.Grid
 import Radix.Heading
 import Radix.Icon
+import Radix.IconButton
 import Radix.Layout
 import Radix.Link
 import Radix.Spinner
@@ -130,6 +131,7 @@ view model =
                     |> Radix.Flex.view
                 )
              , viewSection "Button" viewButtons
+             , viewSection "IconButton" viewIconButtons
              , viewSection "Callout"
                 (Radix.Callout.new
                     { content = [ Html.text "This is a callout" ]
@@ -161,26 +163,96 @@ viewSection label content =
     ]
 
 
+viewIconButtons : Html Msg
+viewIconButtons =
+    Radix.Flex.new
+        [ Radix.Flex.new
+            [ Radix.IconButton.new
+                { icon =
+                    Radix.Icon.magnifyingGlass
+                        |> Radix.Icon.withSize 18
+                , onClick = UserClickedButton
+                }
+                |> Radix.IconButton.withVariantClassic
+                |> Radix.IconButton.view
+            , Radix.IconButton.new
+                { icon =
+                    Radix.Icon.magnifyingGlass
+                        |> Radix.Icon.withSize 18
+                , onClick = UserClickedButton
+                }
+                |> Radix.IconButton.view
+            , Radix.IconButton.new
+                { icon =
+                    Radix.Icon.magnifyingGlass
+                        |> Radix.Icon.withSize 18
+                , onClick = UserClickedButton
+                }
+                |> Radix.IconButton.withVariantSoft
+                |> Radix.IconButton.view
+            , Radix.IconButton.new
+                { icon =
+                    Radix.Icon.magnifyingGlass
+                        |> Radix.Icon.withSize 18
+                , onClick = UserClickedButton
+                }
+                |> Radix.IconButton.withVariantSurface
+                |> Radix.IconButton.view
+            , Radix.IconButton.new
+                { icon =
+                    Radix.Icon.magnifyingGlass
+                        |> Radix.Icon.withSize 18
+                , onClick = UserClickedButton
+                }
+                |> Radix.IconButton.withVariantOutline
+                |> Radix.IconButton.view
+            ]
+            |> Radix.Flex.withGapScale 3
+            |> Radix.Flex.view
+        , Radix.Flex.new
+            [ Radix.IconButton.new
+                { icon =
+                    Radix.Icon.magnifyingGlass
+                        |> Radix.Icon.withSize 18
+                , onClick = UserClickedButton
+                }
+                |> Radix.IconButton.withColor Radix.Indigo
+                |> Radix.IconButton.view
+            , Radix.IconButton.new
+                { icon =
+                    Radix.Icon.magnifyingGlass
+                        |> Radix.Icon.withSize 18
+                , onClick = UserClickedButton
+                }
+                |> Radix.IconButton.withLoading
+                |> Radix.IconButton.view
+            , Radix.IconButton.new
+                { icon =
+                    Radix.Icon.magnifyingGlass
+                        |> Radix.Icon.withSize 18
+                , onClick = UserClickedButton
+                }
+                |> Radix.IconButton.withDisabled
+                |> Radix.IconButton.view
+            , Radix.IconButton.new
+                { icon =
+                    Radix.Icon.magnifyingGlass
+                        |> Radix.Icon.withSize 18
+                , onClick = UserClickedButton
+                }
+                |> Radix.IconButton.withColor Radix.Orange
+                |> Radix.IconButton.view
+            ]
+            |> Radix.Flex.withGapScale 3
+            |> Radix.Flex.view
+        ]
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.view
+
+
 viewDataList : Html Msg
 viewDataList =
-    -- <DataList.Root>
-    --   <DataList.Item>
-    --     <DataList.Label minWidth="88px">ID</DataList.Label>
-    --     <DataList.Value>
-    --       <Flex align="center" gap="2">
-    --         <Code variant="ghost">u_2J89JSA4GJ</Code>
-    --         <IconButton
-    --           size="1"
-    --           aria-label="Copy value"
-    --           color="gray"
-    --           variant="ghost"
-    --         >
-    --           <CopyIcon />
-    --         </IconButton>
-    --       </Flex>
-    --     </DataList.Value>
-    --   </DataList.Item>
-    -- </DataList.Root>
     Radix.Flex.new
         [ Radix.DataList.new
             [ Radix.DataList.Item.new
@@ -202,15 +274,13 @@ viewDataList =
                         [ Radix.Code.new "u_2J89JSA4GJ"
                             |> Radix.Code.withVariantGhost
                             |> Radix.Code.view
-
-                        -- ,
-                        --   Radix.Button.new
-                        --     { content = [ Radix.Icon.copy |> Radix.Icon.view ]
-                        --     , onClick = UserClickedButton
-                        --     }
-                        --     |> Radix.Button.withSize Radix.Size1
-                        --     |> Radix.Button.withVariantGhost
-                        --     |> Radix.Button.view
+                        , Radix.IconButton.new
+                            { icon = Radix.Icon.copy
+                            , onClick = UserClickedButton
+                            }
+                            |> Radix.IconButton.withSize1
+                            |> Radix.IconButton.withVariantGhost
+                            |> Radix.IconButton.view
                         ]
                         |> Radix.Flex.withAlignment Radix.AlignCenter
                         |> Radix.Flex.withGapScale 2
