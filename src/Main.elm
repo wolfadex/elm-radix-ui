@@ -25,6 +25,7 @@ import Radix.IconButton
 import Radix.Layout
 import Radix.Link
 import Radix.Separator
+import Radix.Skeleton
 import Radix.Spinner
 import Radix.Text
 
@@ -144,6 +145,7 @@ view model =
              , viewSection "Checkbox" viewCheckboxes
              , viewSection "DataList" viewDataList
              , viewSection "Separator" viewSeparators
+             , viewSection "Skeleton" viewSkeleton
              ]
                 |> List.concat
                 |> Radix.Flex.new
@@ -163,6 +165,37 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewSkeleton : Html Msg
+viewSkeleton =
+    Radix.Flex.new
+        [ Radix.Skeleton.new
+            |> Radix.Skeleton.withWidth "10rem"
+            |> Radix.Skeleton.view
+        , Radix.Skeleton.new
+            |> Radix.Skeleton.withWidth "4rem"
+            |> Radix.Skeleton.withHeight "4rem"
+            |> Radix.Skeleton.view
+        , Radix.Flex.new
+            [ Radix.Text.new
+                [ Html.text "Hello, World! May I ask who i calling?"
+                ]
+                |> Radix.Text.view
+            , Radix.Text.new
+                [ Radix.Skeleton.new
+                    |> Radix.Skeleton.withChild
+                        (Html.text "Hello, World! May I ask who i calling?")
+                    |> Radix.Skeleton.view
+                ]
+                |> Radix.Text.view
+            ]
+            |> Radix.Flex.withDirection Radix.Flex.Column
+            |> Radix.Flex.view
+        ]
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.view
 
 
 viewSeparators : Html Msg
