@@ -24,6 +24,7 @@ import Radix.Icon
 import Radix.IconButton
 import Radix.Layout
 import Radix.Link
+import Radix.Separator
 import Radix.Spinner
 import Radix.Text
 
@@ -142,6 +143,7 @@ view model =
              , viewSection "Card" viewCard
              , viewSection "Checkbox" viewCheckboxes
              , viewSection "DataList" viewDataList
+             , viewSection "Separator" viewSeparators
              ]
                 |> List.concat
                 |> Radix.Flex.new
@@ -161,6 +163,41 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewSeparators : Html Msg
+viewSeparators =
+    Radix.Flex.new
+        [ Radix.Text.new [ Html.text "Separators" ]
+            |> Radix.Text.withSize 2
+            |> Radix.Text.view
+        , Radix.Separator.new
+            |> Radix.Separator.withSize4
+            |> Radix.Separator.view
+        , Radix.Flex.new
+            [ Radix.Text.new [ Html.text "One" ]
+                |> Radix.Text.withSize 2
+                |> Radix.Text.view
+            , Radix.Separator.new
+                |> Radix.Separator.withOrientationVertical
+                |> Radix.Separator.view
+            , Radix.Text.new [ Html.text "Two" ]
+                |> Radix.Text.withSize 2
+                |> Radix.Text.view
+            , Radix.Separator.new
+                |> Radix.Separator.withOrientationVertical
+                |> Radix.Separator.view
+            , Radix.Text.new [ Html.text "Three" ]
+                |> Radix.Text.withSize 2
+                |> Radix.Text.view
+            ]
+            |> Radix.Flex.withGapScale 3
+            |> Radix.Flex.view
+        ]
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.withMaxWidth "20rem"
+        |> Radix.Flex.view
 
 
 viewIconButtons : Html Msg
