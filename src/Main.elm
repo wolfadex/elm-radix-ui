@@ -17,6 +17,7 @@ import Radix.Code
 import Radix.DataList
 import Radix.DataList.Item
 import Radix.DataList.Label
+import Radix.Emphasis
 import Radix.Flex
 import Radix.Grid
 import Radix.Heading
@@ -24,6 +25,7 @@ import Radix.Icon
 import Radix.IconButton
 import Radix.Layout
 import Radix.Link
+import Radix.Modal
 import Radix.Separator
 import Radix.Skeleton
 import Radix.Spinner
@@ -43,6 +45,8 @@ main =
 type alias Model =
     { theme : Radix.Color
     , darkEnabled : Bool
+    , modal1 : Bool
+    , modal2 : Bool
     }
 
 
@@ -50,6 +54,8 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { theme = Radix.Blue
       , darkEnabled = False
+      , modal1 = False
+      , modal2 = False
       }
     , Cmd.none
     )
@@ -65,6 +71,10 @@ type Msg
     | UserClickedDarkToggle
     | UserClickedButton
     | UserClickedCheckbox Bool
+    | UserClickedOpenModal1
+    | UserClosedModal1
+    | UserClickedOpenModal2
+    | UserClosedModal2
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -81,6 +91,18 @@ update msg model =
 
         UserClickedCheckbox _ ->
             ( model, Cmd.none )
+
+        UserClickedOpenModal1 ->
+            ( { model | modal1 = True }, Cmd.none )
+
+        UserClosedModal1 ->
+            ( { model | modal1 = False }, Cmd.none )
+
+        UserClickedOpenModal2 ->
+            ( { model | modal2 = True }, Cmd.none )
+
+        UserClosedModal2 ->
+            ( { model | modal2 = False }, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
@@ -144,6 +166,7 @@ view model =
              , viewSection "Card" viewCard
              , viewSection "Checkbox" viewCheckboxes
              , viewSection "DataList" viewDataList
+             , viewSection "Modal" (viewModals model)
              , viewSection "Separator" viewSeparators
              , viewSection "Skeleton" viewSkeleton
              ]
@@ -165,6 +188,83 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewModals : Model -> Html Msg
+viewModals model =
+    Radix.Flex.new
+        [ Radix.Button.new
+            { content = [ Html.text "Open Modal 1" ]
+            , onClick = UserClickedOpenModal1
+            }
+            |> Radix.Button.view
+        , Radix.Modal.new
+            { open = model.modal1
+            , onClose = UserClosedModal1
+            , content =
+                Radix.Box.new
+                    [ Radix.Text.new [ Html.text "Hello, World!" ]
+                        |> Radix.Text.view
+                    ]
+                    |> Radix.Box.withPaddingScale 3
+                    |> Radix.Box.view
+            }
+            |> Radix.Modal.view
+        , Radix.Button.new
+            { content = [ Html.text "Open Modal 2" ]
+            , onClick = UserClickedOpenModal2
+            }
+            |> Radix.Button.view
+        , Radix.Modal.new
+            { open = model.modal2
+            , onClose = UserClosedModal2
+            , content =
+                Radix.Flex.new
+                    [ Radix.Heading.new "Modal 2"
+                        |> Radix.Heading.withSize 5
+                        |> Radix.Heading.view
+                    , Radix.Text.new
+                        [ Html.text "Hello, World! "
+                        , Radix.Link.new
+                            { href = "https://www.radix-ui.com/"
+                            , content = [ Html.text "Hello, Radix UI!" ]
+                            }
+                            |> Radix.Link.view
+                        , Radix.Emphasis.new " Ya know what else is cool? "
+                            |> Radix.Emphasis.view
+                        , Radix.Link.new
+                            { href = "https://elm-lang.org/"
+                            , content = [ Html.text "Hello, Elm!" ]
+                            }
+                            |> Radix.Link.view
+                        ]
+                        |> Radix.Text.asParagraph
+                        |> Radix.Text.view
+                    , Radix.Flex.new
+                        [ Radix.Button.new
+                            { content = [ Html.text "Cancel" ]
+                            , onClick = UserClosedModal2
+                            }
+                            |> Radix.Button.withVariantOutline
+                            |> Radix.Button.view
+                        , Radix.Button.new
+                            { content = [ Html.text "Submit" ]
+                            , onClick = UserClosedModal2
+                            }
+                            |> Radix.Button.view
+                        ]
+                        |> Radix.Flex.withGapScale 2
+                        |> Radix.Flex.withJustification Radix.JustifyEnd
+                        |> Radix.Flex.view
+                    ]
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withDirection Radix.Flex.Column
+                    |> Radix.Flex.view
+            }
+            |> Radix.Modal.view
+        ]
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.view
 
 
 viewSkeleton : Html Msg
