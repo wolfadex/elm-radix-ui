@@ -12,8 +12,12 @@
 
     <style>
       .rt-BaseDialogContent-overrides {
-        position: unset;
+        position: fixed;
         z-index: unset;
+      }
+
+      * :has(dialog[open]) {
+        overflow: hidden;
       }
     </style>
 

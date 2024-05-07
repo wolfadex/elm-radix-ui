@@ -105,7 +105,7 @@ withCustomAttributes customAttributes (Config config) =
 view : Config msg -> Html msg
 view (Config config) =
     Html.node "dialog"
-        ([ Html.Attributes.property "___open" (Json.Encode.bool config.open)
+        ([ Html.Attributes.property "___elm-radix-ui-open" (Json.Encode.bool config.open)
          , Html.Attributes.attribute "data-state" <|
             if config.open then
                 "open"
