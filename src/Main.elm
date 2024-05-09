@@ -30,6 +30,7 @@ import Radix.Separator
 import Radix.Skeleton
 import Radix.Spinner
 import Radix.Text
+import Radix.Tooltip
 
 
 main : Program () Model Msg
@@ -169,6 +170,7 @@ view model =
              , viewSection "Modal" (viewModals model)
              , viewSection "Separator" viewSeparators
              , viewSection "Skeleton" viewSkeleton
+             , viewSection "Tooltips" viewTooltips
              ]
                 |> List.concat
                 |> Radix.Flex.new
@@ -188,6 +190,32 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewTooltips : Html Msg
+viewTooltips =
+    Radix.Flex.new
+        [ Radix.Avatar.new (Radix.Avatar.Initials "WS")
+            |> Radix.Avatar.withSrc "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
+            |> Radix.Avatar.view
+            |> (Radix.Tooltip.new "Hello, Tooltip!"
+                    |> Radix.Tooltip.view
+               )
+        , Radix.Avatar.new (Radix.Avatar.Initials "WS")
+            |> Radix.Avatar.withSrc "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
+            |> Radix.Avatar.view
+            |> (Radix.Tooltip.new "Wolfgang Schuster"
+                    |> Radix.Tooltip.view
+               )
+        , Radix.Avatar.new (Radix.Avatar.Initials "WS")
+            |> Radix.Avatar.withSrc "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
+            |> Radix.Avatar.view
+            |> (Radix.Tooltip.new "Get your info here!!!🎉\nGet all your info. All at once and lots more info so that this takes up a lot of space. But how much space is enough?"
+                    |> Radix.Tooltip.view
+               )
+        ]
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.view
 
 
 viewModals : Model -> Html Msg

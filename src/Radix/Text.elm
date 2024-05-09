@@ -18,6 +18,11 @@ type Config msg
         , alignment : Maybe Align
         , trim : Maybe Trim
         , wrap : Maybe Wrap
+
+        --
+        , customClassList : List ( String, Bool )
+        , customStyles : List ( String, String )
+        , customAttributes : List (Html.Attribute msg)
         }
 
 
@@ -130,6 +135,11 @@ new content =
         , alignment = Nothing
         , trim = Nothing
         , wrap = Nothing
+
+        --
+        , customClassList = []
+        , customStyles = []
+        , customAttributes = []
         }
 
 
@@ -221,31 +231,61 @@ withWrap wrap (Config config) =
         }
 
 
+withCustomClassList : List ( String, Bool ) -> Config msg -> Config msg
+withCustomClassList customClassList (Config config) =
+    Config
+        { config
+            | customClassList = customClassList
+        }
+
+
+withCustomStyles : List ( String, String ) -> Config msg -> Config msg
+withCustomStyles customStyles (Config config) =
+    Config
+        { config
+            | customStyles = customStyles
+        }
+
+
+withCustomAttributes : List (Html.Attribute msg) -> Config msg -> Config msg
+withCustomAttributes customAttributes (Config config) =
+    Config
+        { config
+            | customAttributes = customAttributes
+        }
+
+
 view : Config msg -> Html msg
 view (Config config) =
     Html.node config.node
-        [ Html.Attributes.classList
-            [ ( "rt-Text", True )
-            , ( "rt-truncate", config.truncate )
-            , ( "rt-high-contrast", config.isHighContrast )
-            , Radix.Internal.classListMaybe
+        ([ Html.Attributes.classList
+            ([ ( "rt-Text", True )
+             , ( "rt-truncate", config.truncate )
+             , ( "rt-high-contrast", config.isHighContrast )
+             , Radix.Internal.classListMaybe
                 (\size -> "rt-r-size-" ++ String.fromInt size)
                 config.size
-            , Radix.Internal.classListMaybe
+             , Radix.Internal.classListMaybe
                 (\weight -> weightToCss weight)
                 config.weight
-            , Radix.Internal.classListMaybe
+             , Radix.Internal.classListMaybe
                 (\alignment -> alignToCss alignment)
                 config.alignment
-            , Radix.Internal.classListMaybe
+             , Radix.Internal.classListMaybe
                 (\trim -> trimToCss trim)
                 config.trim
-            , Radix.Internal.classListMaybe
+             , Radix.Internal.classListMaybe
                 (\wrap -> wrapToCss wrap)
                 config.wrap
-            ]
-        , Radix.Internal.attributeMaybe
+             ]
+                ++ config.customClassList
+            )
+         , Radix.Internal.attributeMaybe
             (\color -> Html.Attributes.attribute "data-accent-color" (Radix.colorToString color))
             config.color
-        ]
+         , Radix.Internal.styles
+            config.customStyles
+         ]
+            ++ config.customAttributes
+        )
         config.content

@@ -19,6 +19,25 @@
       * :has(dialog[open]) {
         overflow: hidden;
       }
+
+      .rt-TooltipContent:popover-open {
+        margin: unset;
+        border: unset;
+        overflow: visible;
+      }
+
+      .rt-TooltipArrow {
+        transform: rotate(45deg);
+        position: fixed;
+        display: block;
+        height: 7px;
+        width: 7px;
+        background-color: var(--gray-12);
+      }
+
+      * + .rt-TooltipContent {
+        /* position: relative; */
+      }
     </style>
 
     <!-- META -->
@@ -27,7 +46,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
+    <script src="elm-radix.js"></script>
     <script src="elm-modal.js"></script>
+    <script src="elm-popover.js"></script>
+    <!-- <script src="elm-portal.js"></script> -->
     <script src="elm.js"></script>
     <script>
       Elm.Main.init();
