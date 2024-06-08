@@ -17,6 +17,11 @@ type Config msg
         , color : Maybe Radix.Color
         , radius : Maybe Radix.Radius
         , slot : Maybe (Html msg)
+
+        --
+        , customClassList : List ( String, Bool )
+        , customStyles : List ( String, String )
+        , customAttributes : List (Html.Attribute msg)
         }
 
 
@@ -31,6 +36,11 @@ new options =
         , color = Nothing
         , radius = Nothing
         , slot = Nothing
+
+        --
+        , customClassList = []
+        , customStyles = []
+        , customAttributes = []
         }
 
 
@@ -116,6 +126,30 @@ withSlot slot (Config config) =
     Config { config | slot = Just slot }
 
 
+withCustomClassList : List ( String, Bool ) -> Config msg -> Config msg
+withCustomClassList customClassList (Config config) =
+    Config
+        { config
+            | customClassList = customClassList
+        }
+
+
+withCustomStyles : List ( String, String ) -> Config msg -> Config msg
+withCustomStyles customStyles (Config config) =
+    Config
+        { config
+            | customStyles = customStyles
+        }
+
+
+withCustomAttributes : List (Html.Attribute msg) -> Config msg -> Config msg
+withCustomAttributes customAttributes (Config config) =
+    Config
+        { config
+            | customAttributes = customAttributes
+        }
+
+
 view : Config msg -> Html msg
 view (Config config) =
     Html.div
@@ -131,13 +165,22 @@ view (Config config) =
             config.radius
         ]
         [ Html.input
-            [ Html.Attributes.class "rt-reset rt-TextFieldInput"
-            , Html.Attributes.value config.value
-            , Html.Events.onInput config.onInput
-            , Radix.Internal.attributeMaybe
+            ([ Html.Attributes.classList
+                ([ ( "rt-reset", True )
+                 , ( "rt-TextFieldInput", True )
+                 ]
+                    ++ config.customClassList
+                )
+             , Html.Attributes.value config.value
+             , Html.Events.onInput config.onInput
+             , Radix.Internal.attributeMaybe
                 Html.Attributes.placeholder
                 config.placeholder
-            ]
+             , Radix.Internal.styles
+                config.customStyles
+             ]
+                ++ config.customAttributes
+            )
             []
         , case config.slot of
             Nothing ->
