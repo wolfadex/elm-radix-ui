@@ -23,6 +23,7 @@ import Radix.Grid
 import Radix.Heading
 import Radix.Icon
 import Radix.IconButton
+import Radix.Inset
 import Radix.Internal
 import Radix.Layout
 import Radix.Link
@@ -30,6 +31,7 @@ import Radix.Modal
 import Radix.Separator
 import Radix.Skeleton
 import Radix.Spinner
+import Radix.Strong
 import Radix.Text
 import Radix.TextArea
 import Radix.TextField
@@ -183,6 +185,7 @@ view model =
              , viewSection "Card" viewCard
              , viewSection "Checkbox" viewCheckboxes
              , viewSection "DataList" viewDataList
+             , viewSection "Inset" viewInset
              , viewSection "Modal" (viewModals model)
              , viewSection "Separator" viewSeparators
              , viewSection "Skeleton" viewSkeleton
@@ -208,6 +211,43 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewInset : Html msg
+viewInset =
+    Radix.Box.new
+        [ Radix.Card.new
+            [ Radix.Inset.new
+                [ Html.img
+                    [ Html.Attributes.src "https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                    , Html.Attributes.alt "Bold typography"
+                    , Radix.styles
+                        [ ( "display", "block" )
+                        , ( "objectFit", "cover" )
+                        , ( "width", "100%" )
+                        , ( "height", "140" )
+                        , ( "backgroundColor", "var(--gray-5)" )
+                        ]
+                    ]
+                    []
+                ]
+                |> Radix.Inset.withClipPaddingBox
+                |> Radix.Inset.withSideTop
+                |> Radix.Inset.view
+            , Radix.Text.new
+                [ Radix.Strong.new "Typography"
+                    |> Radix.Strong.view
+                , Html.text " is the art and technique of arranging type to make written language legible, readable, and appealing when displayed."
+                ]
+                |> Radix.Text.asParagraph
+                |> Radix.Text.withSize 3
+                |> Radix.Text.view
+            ]
+            |> Radix.Card.withSize2
+            |> Radix.Card.view
+        ]
+        |> Radix.Box.withMaxWidth "240px"
+        |> Radix.Box.view
 
 
 viewAspectRatios : Html msg

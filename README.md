@@ -42,7 +42,7 @@ A port of [Radix UI](https://www.radix-ui.com/) to Elm to make for quick prototy
 -   [ ] Dropdown Menu
 -   [ ] Hover Card
 -   [x] Icon Button
--   [ ] Inset
+-   [x] Inset
 -   [ ] Popover
 -   [ ] Progress
 -   [ ] Radio

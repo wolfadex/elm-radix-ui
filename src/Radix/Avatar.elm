@@ -4,7 +4,6 @@ import Html exposing (Html)
 import Html.Attributes
 import Radix
 import Radix.Internal
-import Radix.Text
 
 
 type Config msg
