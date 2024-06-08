@@ -30,6 +30,8 @@ import Radix.Modal
 import Radix.Progress
 import Radix.Separator
 import Radix.Skeleton
+import Radix.Slider
+import Radix.Slider.Thumb
 import Radix.Spinner
 import Radix.Strong
 import Radix.Text
@@ -55,6 +57,10 @@ type alias Model =
     , modal2 : Bool
     , textFieldValue : String
     , textAreaValue : String
+    , slider1 : Float
+    , slider2Thumb1 : Float
+    , slider2Thumb2 : Float
+    , slider2Thumb3 : Float
     }
 
 
@@ -66,6 +72,10 @@ init _ =
       , modal2 = False
       , textFieldValue = ""
       , textAreaValue = ""
+      , slider1 = 0
+      , slider2Thumb1 = 25
+      , slider2Thumb2 = 65
+      , slider2Thumb3 = 80
       }
     , Cmd.none
     )
@@ -87,6 +97,10 @@ type Msg
     | UserClosedModal2
     | TextFieldChanged String
     | TextAreaChanged String
+    | UserChangedSlider1 Float
+    | UserChangedSlider2Thumb1 Float
+    | UserChangedSlider2Thumb2 Float
+    | UserChangedSlider2Thumb3 Float
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -121,6 +135,18 @@ update msg model =
 
         TextAreaChanged value ->
             ( { model | textAreaValue = value }, Cmd.none )
+
+        UserChangedSlider1 value ->
+            ( { model | slider1 = value }, Cmd.none )
+
+        UserChangedSlider2Thumb1 value ->
+            ( { model | slider2Thumb1 = value }, Cmd.none )
+
+        UserChangedSlider2Thumb2 value ->
+            ( { model | slider2Thumb2 = value }, Cmd.none )
+
+        UserChangedSlider2Thumb3 value ->
+            ( { model | slider2Thumb3 = value }, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
@@ -190,6 +216,7 @@ view model =
              , viewSection "Progress" viewProgresses
              , viewSection "Separator" viewSeparators
              , viewSection "Skeleton" viewSkeleton
+             , viewSection "Slider" (viewSliders model)
              , viewSection "Tooltips" viewTooltips
              , viewSection "TextField" (viewTextFields model)
              , viewSection "TextArea" (viewTextAreas model)
@@ -212,6 +239,46 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewSliders : Model -> Html Msg
+viewSliders model =
+    Radix.Flex.new
+        [ Radix.Slider.new
+            { thumbs =
+                ( Radix.Slider.Thumb.new
+                    { value = model.slider1
+                    , onInput = UserChangedSlider1
+                    }
+                , []
+                )
+            }
+            |> Radix.Slider.withColor Radix.Orange
+            |> Radix.Slider.view
+        , Radix.Slider.new
+            { thumbs =
+                ( Radix.Slider.Thumb.new
+                    { value = model.slider2Thumb1
+                    , onInput = UserChangedSlider2Thumb1
+                    }
+                , [ Radix.Slider.Thumb.new
+                        { value = model.slider2Thumb2
+                        , onInput = UserChangedSlider2Thumb2
+                        }
+                  , Radix.Slider.Thumb.new
+                        { value = model.slider2Thumb3
+                        , onInput = UserChangedSlider2Thumb3
+                        }
+                  ]
+                )
+            }
+            |> Radix.Slider.withSize3
+            |> Radix.Slider.view
+        ]
+        |> Radix.Flex.withGapScale 6
+        |> Radix.Flex.withMaxWidth "20rem"
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.view
 
 
 viewProgresses : Html msg
@@ -377,6 +444,7 @@ viewTextFields model =
             , onInput = TextFieldChanged
             }
             |> Radix.TextField.withVariantSoft
+            |> Radix.TextField.withColor Radix.Orange
             |> Radix.TextField.view
         , Radix.TextField.new
             { value = model.textFieldValue

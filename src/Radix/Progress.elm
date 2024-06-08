@@ -12,7 +12,7 @@ type Config msg
         , size : Size
         , variant : Variant
         , color : Maybe Radix.Color
-        , highContrast : Bool
+        , isHighContrast : Bool
         , radius : Maybe Radix.Radius
         , duration : Maybe String
 
@@ -39,7 +39,7 @@ new options =
         , variant = Surface
         , color = Nothing
         , radius = Nothing
-        , highContrast = False
+        , isHighContrast = False
         , duration = Nothing
 
         --
@@ -123,7 +123,7 @@ withRadius radius (Config config) =
 
 withHighContrast : Config msg -> Config msg
 withHighContrast (Config config) =
-    Config { config | highContrast = True }
+    Config { config | isHighContrast = True }
 
 
 withDuration : String -> Config msg -> Config msg
@@ -314,6 +314,7 @@ view (Config config) =
         [ Html.div
             [ Html.Attributes.classList
                 [ ( "rt-ProgressIndicator", True )
+                , ( "rt-high-contrast", config.isHighContrast )
                 ]
             , Html.Attributes.attribute "data-state" <|
                 case config.value of

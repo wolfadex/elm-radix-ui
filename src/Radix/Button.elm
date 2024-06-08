@@ -193,11 +193,9 @@ view (Config config) =
         , Html.Attributes.disabled (config.isDisabled || config.isLoading)
         , Html.Attributes.attribute "highContrast" ""
             |> Radix.Internal.attributeIf config.isHighContrast
-        , Html.Attributes.attribute "data-accent-color"
-            (config.accentColor
-                |> Maybe.map Radix.colorToString
-                |> Maybe.withDefault ""
-            )
+        , Radix.Internal.attributeMaybe
+            (\accentColor -> Html.Attributes.attribute "data-accent-color" (Radix.colorToString accentColor))
+            config.accentColor
         , Radix.Internal.attributeMaybe
             (\radiusOverride ->
                 Html.Attributes.attribute "data-radius" <| Radix.radiusToString radiusOverride

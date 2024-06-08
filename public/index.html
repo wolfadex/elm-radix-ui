@@ -1,58 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <title>Document</title>
-    <style>
-      * {
-        --scaling: 1;
-      }
-    </style>
+    <head>
+        <title>Document</title>
+        <style>
+            * {
+                --scaling: 1;
+            }
+        </style>
 
-    <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="elm-radix-ui-non-radix.css" />
 
-    <style>
-      .rt-BaseDialogContent-overrides {
-        position: fixed;
-        z-index: unset;
-      }
+        <style></style>
 
-      * :has(dialog[open]) {
-        overflow: hidden;
-      }
+        <!-- META -->
 
-      .rt-TooltipContent:popover-open {
-        margin: unset;
-        border: unset;
-        overflow: visible;
-      }
-
-      .rt-TooltipArrow {
-        transform: rotate(45deg);
-        position: fixed;
-        display: block;
-        height: 7px;
-        width: 7px;
-        background-color: var(--gray-12);
-      }
-
-      * + .rt-TooltipContent {
-        /* position: relative; */
-      }
-    </style>
-
-    <!-- META -->
-
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
-  <body>
-    <script src="elm-radix.js"></script>
-    <script src="elm-modal.js"></script>
-    <script src="elm-popover.js"></script>
-    <!-- <script src="elm-portal.js"></script> -->
-    <script src="elm.js"></script>
-    <script>
-      Elm.Main.init();
-    </script>
-  </body>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body>
+        <script src="elm-radix.js"></script>
+        <script src="elm-modal.js"></script>
+        <script src="elm-popover.js"></script>
+        <!-- <script src="elm-portal.js"></script> -->
+        <script src="elm.js"></script>
+        <script>
+            Elm.Main.init();
+        </script>
+    </body>
 </html>

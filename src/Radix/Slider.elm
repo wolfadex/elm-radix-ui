@@ -1,21 +1,33 @@
-module Radix.TextField exposing (..)
+module Radix.Slider exposing (..)
 
 import Html exposing (Html)
 import Html.Attributes
 import Html.Events
 import Radix
+import Radix.Flex exposing (directionToCss)
 import Radix.Internal
+import Radix.Separator exposing (Orientation(..))
+import Radix.Slider.Thumb
 
 
 type Config msg
     = Config
-        { value : String
-        , onInput : String -> msg
+        { disabled : Bool
+        , orientation : Orientation
+        , direction : Direction
+        , min : Float
+        , max : Float
+        , step : Float
+        , minStepsBetweenThumbs : Float
+        , thumbs : ( Radix.Slider.Thumb.Config msg, List (Radix.Slider.Thumb.Config msg) )
+        , inverted : Bool
+
+        --
         , size : Size
         , variant : Variant
         , color : Maybe Radix.Color
+        , highContrast : Bool
         , radius : Maybe Radix.Radius
-        , slot : Maybe (Html msg)
 
         --
         , customClassList : List ( String, Bool )
@@ -24,16 +36,56 @@ type Config msg
         }
 
 
-new : { value : String, onInput : String -> msg } -> Config msg
+type Orientation
+    = Horizontal
+    | Vertical
+
+
+orientationToString : Orientation -> String
+orientationToString orientation =
+    case orientation of
+        Horizontal ->
+            "horizontal"
+
+        Vertical ->
+            "vertical"
+
+
+type Direction
+    = Ltr
+    | Rtl
+
+
+directionToString : Direction -> String
+directionToString direction =
+    case direction of
+        Ltr ->
+            "ltr"
+
+        Rtl ->
+            "rtl"
+
+
+new :
+    { thumbs : ( Radix.Slider.Thumb.Config msg, List (Radix.Slider.Thumb.Config msg) )
+    }
+    -> Config msg
 new options =
     Config
-        { value = options.value
-        , onInput = options.onInput
+        { min = 0
+        , max = 100
+        , disabled = False
+        , orientation = Horizontal
+        , direction = Ltr
+        , step = 1
+        , minStepsBetweenThumbs = 0
+        , thumbs = options.thumbs
+        , inverted = False
         , size = Size2
         , variant = Surface
         , color = Nothing
+        , highContrast = False
         , radius = Nothing
-        , slot = Nothing
 
         --
         , customClassList = []
@@ -79,8 +131,8 @@ type Variant
     | Soft
 
 
-variantToCss : Variant -> String
-variantToCss variant =
+variantToClass : Variant -> String
+variantToClass variant =
     "rt-variant-"
         ++ (case variant of
                 Classic ->
@@ -114,9 +166,9 @@ withRadius radius (Config config) =
     Config { config | radius = Just radius }
 
 
-withSlot : Html msg -> Config msg -> Config msg
-withSlot slot (Config config) =
-    Config { config | slot = Just slot }
+withHighContrast : Config msg -> Config msg
+withHighContrast (Config config) =
+    Config { config | highContrast = True }
 
 
 withCustomClassList : List ( String, Bool ) -> Config msg -> Config msg
@@ -147,9 +199,9 @@ view : Config msg -> Html msg
 view (Config config) =
     Html.div
         [ Html.Attributes.classList
-            [ ( "rt-TextFieldRoot", True )
+            [ ( "rt-SliderRoot", True )
             , ( sizeToClass config.size, True )
-            , ( variantToCss config.variant, True )
+            , ( variantToClass config.variant, True )
             ]
         , Radix.Internal.attributeMaybe
             (\color -> Html.Attributes.attribute "data-accent-color" (Radix.colorToString color))
@@ -160,27 +212,20 @@ view (Config config) =
             )
             config.radius
         ]
-        [ Html.input
-            ([ Html.Attributes.classList
-                ([ ( "rt-reset", True )
-                 , ( "rt-TextFieldInput", True )
-                 ]
-                    ++ config.customClassList
-                )
-             , Html.Attributes.value config.value
-             , Html.Events.onInput config.onInput
-             , Radix.styles
-                config.customStyles
-             ]
-                ++ config.customAttributes
+        (let
+            ( thumb, thumbs ) =
+                config.thumbs
+         in
+         List.foldr
+            (\thumb_ thumbs_ ->
+                Radix.Slider.Thumb.view
+                    { min = config.min
+                    , max = config.max
+                    , step = config.step
+                    }
+                    thumb_
+                    :: thumbs_
             )
             []
-        , case config.slot of
-            Nothing ->
-                Html.text ""
-
-            Just slot ->
-                Html.div
-                    [ Html.Attributes.class "rt-TextFieldSlot" ]
-                    [ slot ]
-        ]
+            (thumb :: thumbs)
+        )
