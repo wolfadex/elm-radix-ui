@@ -44,7 +44,7 @@ A port of [Radix UI](https://www.radix-ui.com/) to Elm to make for quick prototy
 -   [x] Icon Button
 -   [x] Inset
 -   [ ] Popover
--   [ ] Progress
+-   [x] Progress
 -   [ ] Radio
 -   [ ] Radio Group
 -   [ ] Radio Cards

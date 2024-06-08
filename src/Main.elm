@@ -24,10 +24,10 @@ import Radix.Heading
 import Radix.Icon
 import Radix.IconButton
 import Radix.Inset
-import Radix.Internal
 import Radix.Layout
 import Radix.Link
 import Radix.Modal
+import Radix.Progress
 import Radix.Separator
 import Radix.Skeleton
 import Radix.Spinner
@@ -187,6 +187,7 @@ view model =
              , viewSection "DataList" viewDataList
              , viewSection "Inset" viewInset
              , viewSection "Modal" (viewModals model)
+             , viewSection "Progress" viewProgresses
              , viewSection "Separator" viewSeparators
              , viewSection "Skeleton" viewSkeleton
              , viewSection "Tooltips" viewTooltips
@@ -211,6 +212,24 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewProgresses : Html msg
+viewProgresses =
+    Radix.Flex.new
+        [ Radix.Progress.new { value = Radix.Progress.Indeterminate }
+            |> Radix.Progress.withSize1
+            |> Radix.Progress.view
+        , Radix.Progress.new { value = Radix.Progress.Loading { value = 25, max = 100 } }
+            |> Radix.Progress.view
+        , Radix.Progress.new { value = Radix.Progress.Complete { value = 100, max = 100 } }
+            |> Radix.Progress.withSize3
+            |> Radix.Progress.view
+        ]
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withMaxWidth "300px"
+        |> Radix.Flex.view
 
 
 viewInset : Html msg
