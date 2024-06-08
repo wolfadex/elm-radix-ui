@@ -30,6 +30,7 @@ import Radix.Separator
 import Radix.Skeleton
 import Radix.Spinner
 import Radix.Text
+import Radix.TextArea
 import Radix.TextField
 import Radix.Tooltip
 
@@ -50,6 +51,7 @@ type alias Model =
     , modal1 : Bool
     , modal2 : Bool
     , textFieldValue : String
+    , textAreaValue : String
     }
 
 
@@ -60,6 +62,7 @@ init _ =
       , modal1 = False
       , modal2 = False
       , textFieldValue = ""
+      , textAreaValue = ""
       }
     , Cmd.none
     )
@@ -80,6 +83,7 @@ type Msg
     | UserClickedOpenModal2
     | UserClosedModal2
     | TextFieldChanged String
+    | TextAreaChanged String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -111,6 +115,9 @@ update msg model =
 
         TextFieldChanged value ->
             ( { model | textFieldValue = value }, Cmd.none )
+
+        TextAreaChanged value ->
+            ( { model | textAreaValue = value }, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
@@ -179,6 +186,7 @@ view model =
              , viewSection "Skeleton" viewSkeleton
              , viewSection "Tooltips" viewTooltips
              , viewSection "TextField" (viewTextFields model)
+             , viewSection "TextArea" (viewTextAreas model)
              ]
                 |> List.concat
                 |> Radix.Flex.new
@@ -198,6 +206,50 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewTextAreas : Model -> Html Msg
+viewTextAreas model =
+    Radix.Flex.new
+        [ Radix.TextArea.new
+            { value = model.textAreaValue
+            , onInput = TextAreaChanged
+            }
+            |> Radix.TextArea.withCustomAttributes [ Html.Attributes.placeholder "Search..." ]
+            |> Radix.TextArea.view
+        , Radix.TextArea.new
+            { value = model.textAreaValue
+            , onInput = TextAreaChanged
+            }
+            |> Radix.TextArea.withCustomAttributes [ Html.Attributes.placeholder "You should type something..." ]
+            |> Radix.TextArea.withResizeHorizontal
+            |> Radix.TextArea.view
+        , Radix.TextArea.new
+            { value = model.textAreaValue
+            , onInput = TextAreaChanged
+            }
+            |> Radix.TextArea.withVariantClassic
+            |> Radix.TextArea.withResizeVertical
+            |> Radix.TextArea.view
+        , Radix.TextArea.new
+            { value = model.textAreaValue
+            , onInput = TextAreaChanged
+            }
+            |> Radix.TextArea.withVariantSoft
+            |> Radix.TextArea.view
+        , Radix.TextArea.new
+            { value = model.textAreaValue
+            , onInput = TextAreaChanged
+            }
+            |> Radix.TextArea.withRadius Radix.Full
+            |> Radix.TextArea.withResizeBoth
+            |> Radix.TextArea.withCustomAttributes [ Html.Attributes.placeholder "Maybe some text...?" ]
+            |> Radix.TextArea.view
+        ]
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.withMaxWidth "20rem"
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.view
 
 
 viewTextFields : Model -> Html Msg
