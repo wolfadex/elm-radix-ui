@@ -30,6 +30,7 @@ import Radix.Separator
 import Radix.Skeleton
 import Radix.Spinner
 import Radix.Text
+import Radix.TextField
 import Radix.Tooltip
 
 
@@ -48,6 +49,7 @@ type alias Model =
     , darkEnabled : Bool
     , modal1 : Bool
     , modal2 : Bool
+    , textFieldValue : String
     }
 
 
@@ -57,6 +59,7 @@ init _ =
       , darkEnabled = False
       , modal1 = False
       , modal2 = False
+      , textFieldValue = ""
       }
     , Cmd.none
     )
@@ -76,6 +79,7 @@ type Msg
     | UserClosedModal1
     | UserClickedOpenModal2
     | UserClosedModal2
+    | TextFieldChanged String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -104,6 +108,9 @@ update msg model =
 
         UserClosedModal2 ->
             ( { model | modal2 = False }, Cmd.none )
+
+        TextFieldChanged value ->
+            ( { model | textFieldValue = value }, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
@@ -171,6 +178,7 @@ view model =
              , viewSection "Separator" viewSeparators
              , viewSection "Skeleton" viewSkeleton
              , viewSection "Tooltips" viewTooltips
+             , viewSection "TextField" (viewTextFields model)
              ]
                 |> List.concat
                 |> Radix.Flex.new
@@ -190,6 +198,48 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewTextFields : Model -> Html Msg
+viewTextFields model =
+    Radix.Flex.new
+        [ Radix.TextField.new
+            { value = model.textFieldValue
+            , onInput = TextFieldChanged
+            }
+            |> Radix.TextField.withSlot (Radix.Icon.magnifyingGlass |> Radix.Icon.view)
+            |> Radix.TextField.withPlaceholder "Search..."
+            |> Radix.TextField.view
+        , Radix.TextField.new
+            { value = model.textFieldValue
+            , onInput = TextFieldChanged
+            }
+            |> Radix.TextField.withPlaceholder "You should type something..."
+            |> Radix.TextField.view
+        , Radix.TextField.new
+            { value = model.textFieldValue
+            , onInput = TextFieldChanged
+            }
+            |> Radix.TextField.withVariantClassic
+            |> Radix.TextField.view
+        , Radix.TextField.new
+            { value = model.textFieldValue
+            , onInput = TextFieldChanged
+            }
+            |> Radix.TextField.withVariantSoft
+            |> Radix.TextField.view
+        , Radix.TextField.new
+            { value = model.textFieldValue
+            , onInput = TextFieldChanged
+            }
+            |> Radix.TextField.withRadius Radix.Full
+            |> Radix.TextField.withPlaceholder "Maybe some text...?"
+            |> Radix.TextField.view
+        ]
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.withMaxWidth "20rem"
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.view
 
 
 viewTooltips : Html Msg
