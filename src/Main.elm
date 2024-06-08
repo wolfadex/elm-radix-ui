@@ -208,13 +208,13 @@ viewTextFields model =
             , onInput = TextFieldChanged
             }
             |> Radix.TextField.withSlot (Radix.Icon.magnifyingGlass |> Radix.Icon.view)
-            |> Radix.TextField.withPlaceholder "Search..."
+            |> Radix.TextField.withCustomAttributes [ Html.Attributes.placeholder "Search..." ]
             |> Radix.TextField.view
         , Radix.TextField.new
             { value = model.textFieldValue
             , onInput = TextFieldChanged
             }
-            |> Radix.TextField.withPlaceholder "You should type something..."
+            |> Radix.TextField.withCustomAttributes [ Html.Attributes.placeholder "You should type something..." ]
             |> Radix.TextField.view
         , Radix.TextField.new
             { value = model.textFieldValue
@@ -233,7 +233,7 @@ viewTextFields model =
             , onInput = TextFieldChanged
             }
             |> Radix.TextField.withRadius Radix.Full
-            |> Radix.TextField.withPlaceholder "Maybe some text...?"
+            |> Radix.TextField.withCustomAttributes [ Html.Attributes.placeholder "Maybe some text...?" ]
             |> Radix.TextField.view
         ]
         |> Radix.Flex.withDirection Radix.Flex.Column

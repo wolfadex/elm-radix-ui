@@ -9,8 +9,7 @@ import Radix.Internal
 
 type Config msg
     = Config
-        { placeholder : Maybe String
-        , value : String
+        { value : String
         , onInput : String -> msg
         , size : Size
         , variant : Variant
@@ -28,8 +27,7 @@ type Config msg
 new : { value : String, onInput : String -> msg } -> Config msg
 new options =
     Config
-        { placeholder = Nothing
-        , value = options.value
+        { value = options.value
         , onInput = options.onInput
         , size = Size2
         , variant = Surface
@@ -42,11 +40,6 @@ new options =
         , customStyles = []
         , customAttributes = []
         }
-
-
-withPlaceholder : String -> Config msg -> Config msg
-withPlaceholder placeholder (Config config) =
-    Config { config | placeholder = Just placeholder }
 
 
 type Size
@@ -173,9 +166,6 @@ view (Config config) =
                 )
              , Html.Attributes.value config.value
              , Html.Events.onInput config.onInput
-             , Radix.Internal.attributeMaybe
-                Html.Attributes.placeholder
-                config.placeholder
              , Radix.Internal.styles
                 config.customStyles
              ]
