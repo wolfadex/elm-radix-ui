@@ -75,7 +75,7 @@ view (Config config) =
                 (\maxWidth -> ( "--max-width", maxWidth ))
                 config.maxWidth
             ]
-            |> Radix.Internal.styles
+            |> Radix.styles
         ]
         [ Html.text config.label
         ]

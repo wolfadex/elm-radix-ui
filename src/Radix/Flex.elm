@@ -536,7 +536,7 @@ view (Config config) =
                 ++ layoutAttributes.classes
                 ++ config.customClassList
             )
-         , Radix.Internal.styles
+         , Radix.styles
             (List.filterMap identity
                 [ Maybe.andThen
                     (\gap ->

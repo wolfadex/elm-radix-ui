@@ -118,7 +118,7 @@ view (Config config) =
                 (\maxHeight -> ( "--max-height", maxHeight ))
                 config.maxHeight
             ]
-            |> Radix.Internal.styles
+            |> Radix.styles
         ]
         (case config.child of
             Nothing ->

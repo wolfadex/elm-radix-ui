@@ -23,6 +23,7 @@ import Radix.Grid
 import Radix.Heading
 import Radix.Icon
 import Radix.IconButton
+import Radix.Internal
 import Radix.Layout
 import Radix.Link
 import Radix.Modal
@@ -158,6 +159,7 @@ view model =
                     |> Radix.Box.withWidth "15rem"
                     |> Radix.Box.view
                 )
+             , viewSection "Aspect Ratio" viewAspectRatios
              , viewSection "Avatar"
                 ([ Radix.Avatar.new (Radix.Avatar.Initials "WS")
                     |> Radix.Avatar.withSrc "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
@@ -206,6 +208,43 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewAspectRatios : Html msg
+viewAspectRatios =
+    Radix.Flex.new
+        [ Radix.Text.new
+            [ Html.text "Instead of providing an "
+            , Radix.Code.new "AspectRatio"
+                |> Radix.Code.view
+            , Html.text " component, I've opted for using the native CSS property of"
+            , Radix.Code.new "aspect-ratio"
+                |> Radix.Code.view
+            ]
+            |> Radix.Text.view
+        , Html.img
+            [ Html.Attributes.src "https://images.unsplash.com/photo-1479030160180-b1860951d696?&auto=format&fit=crop&w=1200&q=80"
+            , Html.Attributes.alt "A house in a forest"
+            , Radix.styles
+                [ ( "objectFit", "cover" )
+                , ( "width", "100%" )
+                , ( "height", "100%" )
+                , ( "border-radius", "var(--radius-2)" )
+                ]
+            , Html.Attributes.style "aspect-ratio" "16 / 9"
+            ]
+            []
+        , Html.img
+            [ Html.Attributes.src "https://images.unsplash.com/photo-1535025183041-0991a977e25b?w=300&dpr=2&q=80"
+            , Html.Attributes.alt "Landscape photograph by Tobias Tullius"
+            , Html.Attributes.style "aspect-ratio" "4 / 3"
+            ]
+            []
+        ]
+        |> Radix.Flex.withMaxWidth "30rem"
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.view
 
 
 viewTextAreas : Model -> Html Msg

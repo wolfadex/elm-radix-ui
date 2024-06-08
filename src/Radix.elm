@@ -344,3 +344,10 @@ view options content =
         , Html.Attributes.attribute "data-accent-color" <| colorToString options.accentColor
         ]
         [ content ]
+
+
+styles : List ( String, String ) -> Html.Attribute msg
+styles =
+    List.map (\( key, value ) -> key ++ ":" ++ value)
+        >> String.join "; "
+        >> Html.Attributes.attribute "style"

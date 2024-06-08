@@ -424,7 +424,7 @@ view (Config config) =
                 ++ layoutAttributes.classes
                 ++ config.customClassList
             )
-         , Radix.Internal.styles
+         , Radix.styles
             (layoutAttributes.styles ++ config.customStyles)
          ]
             ++ layoutAttributes.otherAttributes

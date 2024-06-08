@@ -202,7 +202,7 @@ view (Config config) =
                 )
              , Html.Attributes.value config.value
              , Html.Events.onInput config.onInput
-             , Radix.Internal.styles
+             , Radix.styles
                 config.customStyles
              ]
                 ++ config.customAttributes

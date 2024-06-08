@@ -283,7 +283,7 @@ view (Config config) =
          , Radix.Internal.attributeMaybe
             (\color -> Html.Attributes.attribute "data-accent-color" (Radix.colorToString color))
             config.color
-         , Radix.Internal.styles
+         , Radix.styles
             config.customStyles
          ]
             ++ config.customAttributes

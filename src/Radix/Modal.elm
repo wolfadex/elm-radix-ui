@@ -5,7 +5,7 @@ import Html.Attributes
 import Html.Events
 import Json.Decode
 import Json.Encode
-import Radix.Internal
+import Radix
 
 
 type Config msg
@@ -124,7 +124,7 @@ view (Config config) =
              ]
                 ++ config.customClassList
             )
-         , Radix.Internal.styles
+         , Radix.styles
             (List.filterMap identity
                 [ Maybe.map
                     (\width -> ( "--width", width ))

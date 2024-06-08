@@ -36,10 +36,3 @@ classListMaybe f maybe =
 
         Just a ->
             ( f a, True )
-
-
-styles : List ( String, String ) -> Html.Attribute msg
-styles =
-    List.map (\( key, value ) -> key ++ ":" ++ value)
-        >> String.join "; "
-        >> Html.Attributes.attribute "style"
