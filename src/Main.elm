@@ -14,6 +14,7 @@ import Radix.Callout
 import Radix.Card
 import Radix.Checkbox
 import Radix.Code
+import Radix.Container
 import Radix.DataList
 import Radix.DataList.Item
 import Radix.DataList.Label
@@ -66,7 +67,34 @@ type alias Model =
     , slider2Thumb3 : Float
     , switch : Bool
     , activeTab : Tab
+    , activeSection : Section
     }
+
+
+type Section
+    = Headings
+    | Text
+    | Blockquote
+    | AspectRatio
+    | Avatar
+    | Button
+    | IconButton
+    | Callout
+    | Card
+    | Checkbox
+    | DataList
+    | Inset
+    | Modal
+    | Progress
+    | Table
+    | Tab
+    | Separator
+    | Skeleton
+    | Slider
+    | Switch
+    | Tooltips
+    | TextField
+    | TextArea
 
 
 init : () -> ( Model, Cmd Msg )
@@ -83,6 +111,7 @@ init _ =
       , slider2Thumb3 = 80
       , switch = True
       , activeTab = Games
+      , activeSection = Headings
       }
     , Cmd.none
     )
@@ -95,6 +124,7 @@ subscriptions model =
 
 type Msg
     = UserSelectedTheme Radix.Color
+    | UserSelectedSection Section
     | UserClickedDarkToggle
     | UserClickedButton
     | UserClickedCheckbox Bool
@@ -117,6 +147,9 @@ update msg model =
     case msg of
         UserSelectedTheme newTheme ->
             ( { model | theme = newTheme }, Cmd.none )
+
+        UserSelectedSection section ->
+            ( { model | activeSection = section }, Cmd.none )
 
         UserClickedDarkToggle ->
             ( { model | darkEnabled = not model.darkEnabled }, Cmd.none )
@@ -172,72 +205,104 @@ view model =
             { accentColor = model.theme
             , radius = Radix.Medium
             }
-            ([ [ Radix.Heading.new "Elm Radix"
+            ([ [ Radix.Heading.new "Elm Radix UI"
                     |> Radix.Heading.view
-               , Radix.allColors
-                    |> List.map
-                        (\theme ->
-                            let
-                                themeStr =
-                                    Radix.colorToString theme
-                            in
-                            Html.option
-                                [ Html.Attributes.value themeStr
-                                , Html.Events.onClick (UserSelectedTheme theme)
-                                ]
-                                [ Html.text themeStr ]
-                        )
-                    |> Html.select
-                        [ Html.Attributes.value (Radix.colorToString model.theme)
+               , Radix.Flex.new
+                    [ Radix.Text.new
+                        [ Radix.Strong.new "Theme"
+                            |> Radix.Strong.view
                         ]
-               ]
-             , viewSection "Headings" viewHeadings
-             , viewSection "Text" viewText
-             , viewSection "Blockquote"
-                ([ Radix.Blockquote.new "What is dead may never die\n- Game of Thrones"
-                    |> Radix.Blockquote.withWrap Radix.Text.Balance
-                    |> Radix.Blockquote.view
-                 ]
-                    |> Radix.Box.new
-                    |> Radix.Box.withWidth "15rem"
-                    |> Radix.Box.view
-                )
-             , viewSection "Aspect Ratio" viewAspectRatios
-             , viewSection "Avatar"
-                ([ Radix.Avatar.new (Radix.Avatar.Initials "WS")
-                    |> Radix.Avatar.withSrc "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
-                    |> Radix.Avatar.view
-                 , Radix.Avatar.new (Radix.Avatar.Initials "WS")
-                    |> Radix.Avatar.view
-                 ]
-                    |> Radix.Flex.new
-                    |> Radix.Flex.withGapScale 3
+                        |> Radix.Text.view
+                    , Radix.allColors
+                        |> List.map
+                            (\theme ->
+                                let
+                                    themeStr =
+                                        Radix.colorToString theme
+                                in
+                                Html.option
+                                    [ Html.Attributes.value themeStr
+                                    , Html.Events.onClick (UserSelectedTheme theme)
+                                    ]
+                                    [ Html.text themeStr ]
+                            )
+                        |> Html.select
+                            [ Html.Attributes.value (Radix.colorToString model.theme)
+                            ]
+                    ]
+                    |> Radix.Flex.withGapScale 1
                     |> Radix.Flex.view
-                )
-             , viewSection "Button" viewButtons
-             , viewSection "IconButton" viewIconButtons
-             , viewSection "Callout"
-                (Radix.Callout.new
-                    { content = [ Html.text "This is a callout" ]
-                    , icon = Radix.Icon.infoCircled |> Radix.Icon.view
+               ]
+             , [ Radix.Tabs.new
+                    { activeTab = model.activeSection
+                    , onTabChange = UserSelectedSection
+                    , tabs =
+                        [ viewSectionTab Headings
+                            "Heading"
+                            viewHeadings
+                        , viewSectionTab Text
+                            "Text"
+                            viewText
+                        , viewSectionTab Blockquote
+                            "Blockquote"
+                            ([ Radix.Blockquote.new "What is dead may never die\n- Game of Thrones"
+                                |> Radix.Blockquote.withWrap Radix.Text.Balance
+                                |> Radix.Blockquote.view
+                             ]
+                                |> Radix.Box.new
+                                |> Radix.Box.withWidth "15rem"
+                                |> Radix.Box.view
+                            )
+                        , viewSectionTab AspectRatio
+                            "Aspect Ratio"
+                            viewAspectRatios
+                        , viewSectionTab Avatar
+                            "Avatar"
+                            ([ Radix.Avatar.new (Radix.Avatar.Initials "WS")
+                                |> Radix.Avatar.withSrc "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
+                                |> Radix.Avatar.view
+                             , Radix.Avatar.new (Radix.Avatar.Initials "WS")
+                                |> Radix.Avatar.view
+                             ]
+                                |> Radix.Flex.new
+                                |> Radix.Flex.withGapScale 3
+                                |> Radix.Flex.view
+                            )
+                        , viewSectionTab Button
+                            "Button"
+                            viewButtons
+                        , viewSectionTab IconButton
+                            "IconButton"
+                            viewIconButtons
+                        , viewSectionTab Callout
+                            "Callout"
+                            (Radix.Callout.new
+                                { content = [ Html.text "This is a callout" ]
+                                , icon = Radix.Icon.infoCircled |> Radix.Icon.view
+                                }
+                                |> Radix.Callout.view
+                            )
+                        , viewSectionTab Card
+                            "Card"
+                            viewCard
+                        , viewSectionTab Checkbox "Checkbox" viewCheckboxes
+                        , viewSectionTab DataList "DataList" viewDataList
+                        , viewSectionTab Inset "Inset" viewInset
+                        , viewSectionTab Modal "Modal" (viewModals model)
+                        , viewSectionTab Progress "Progress" viewProgresses
+                        , viewSectionTab Table "Table" viewTables
+                        , viewSectionTab Tab "Tab" (viewTabs model)
+                        , viewSectionTab Separator "Separator" viewSeparators
+                        , viewSectionTab Skeleton "Skeleton" viewSkeleton
+                        , viewSectionTab Slider "Slider" (viewSliders model)
+                        , viewSectionTab Switch "Switch" (viewSwitches model)
+                        , viewSectionTab Tooltips "Tooltips" viewTooltips
+                        , viewSectionTab TextField "TextField" (viewTextFields model)
+                        , viewSectionTab TextArea "TextArea" (viewTextAreas model)
+                        ]
                     }
-                    |> Radix.Callout.view
-                )
-             , viewSection "Card" viewCard
-             , viewSection "Checkbox" viewCheckboxes
-             , viewSection "DataList" viewDataList
-             , viewSection "Inset" viewInset
-             , viewSection "Modal" (viewModals model)
-             , viewSection "Progress" viewProgresses
-             , viewSection "Table" viewTables
-             , viewSection "Tab" (viewTabs model)
-             , viewSection "Separator" viewSeparators
-             , viewSection "Skeleton" viewSkeleton
-             , viewSection "Slider" (viewSliders model)
-             , viewSection "Switch" (viewSwitches model)
-             , viewSection "Tooltips" viewTooltips
-             , viewSection "TextField" (viewTextFields model)
-             , viewSection "TextArea" (viewTextAreas model)
+                    |> Radix.Tabs.view
+               ]
              ]
                 |> List.concat
                 |> Radix.Flex.new
@@ -250,13 +315,15 @@ view model =
     }
 
 
-viewSection : String -> Html Msg -> List (Html Msg)
-viewSection label content =
-    [ Radix.Heading.new label
-        |> Radix.Heading.asH2
-        |> Radix.Heading.view
-    , content
-    ]
+viewSectionTab : Section -> String -> Html msg -> { value : Section, trigger : Html msg, content : Html msg }
+viewSectionTab section label content =
+    { value = section
+    , trigger =
+        Radix.Heading.new label
+            |> Radix.Heading.asH2
+            |> Radix.Heading.view
+    , content = content
+    }
 
 
 type Tab
