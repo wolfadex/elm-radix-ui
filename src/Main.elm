@@ -301,6 +301,12 @@ view model =
                         , viewSectionTab TextArea "TextArea" (viewTextAreas model)
                         ]
                     }
+                    |> Radix.Tabs.wrapContentWith
+                        (\content ->
+                            Radix.Box.new [ content ]
+                                |> Radix.Box.withPaddingScale 1
+                                |> Radix.Box.view
+                        )
                     |> Radix.Tabs.view
                ]
              ]
