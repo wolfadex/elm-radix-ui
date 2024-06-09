@@ -34,6 +34,7 @@ import Radix.Slider
 import Radix.Slider.Thumb
 import Radix.Spinner
 import Radix.Strong
+import Radix.Switch
 import Radix.Text
 import Radix.TextArea
 import Radix.TextField
@@ -61,6 +62,7 @@ type alias Model =
     , slider2Thumb1 : Float
     , slider2Thumb2 : Float
     , slider2Thumb3 : Float
+    , switch : Bool
     }
 
 
@@ -76,6 +78,7 @@ init _ =
       , slider2Thumb1 = 25
       , slider2Thumb2 = 65
       , slider2Thumb3 = 80
+      , switch = True
       }
     , Cmd.none
     )
@@ -101,6 +104,7 @@ type Msg
     | UserChangedSlider2Thumb1 Float
     | UserChangedSlider2Thumb2 Float
     | UserChangedSlider2Thumb3 Float
+    | UserToggledSwitch Bool
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -147,6 +151,9 @@ update msg model =
 
         UserChangedSlider2Thumb3 value ->
             ( { model | slider2Thumb3 = value }, Cmd.none )
+
+        UserToggledSwitch checked ->
+            ( { model | switch = checked }, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
@@ -217,6 +224,7 @@ view model =
              , viewSection "Separator" viewSeparators
              , viewSection "Skeleton" viewSkeleton
              , viewSection "Slider" (viewSliders model)
+             , viewSection "Switch" (viewSwitches model)
              , viewSection "Tooltips" viewTooltips
              , viewSection "TextField" (viewTextFields model)
              , viewSection "TextArea" (viewTextAreas model)
@@ -239,6 +247,57 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+viewSwitches : Model -> Html Msg
+viewSwitches model =
+    Radix.Flex.new
+        [ Radix.Switch.new
+            { checked = model.switch
+            , onToggle = UserToggledSwitch
+            }
+            |> Radix.Switch.view
+        , Radix.Switch.new
+            { checked = model.switch
+            , onToggle = UserToggledSwitch
+            }
+            |> Radix.Switch.withColor Radix.Orange
+            |> Radix.Switch.view
+        , Radix.Switch.new
+            { checked = model.switch
+            , onToggle = UserToggledSwitch
+            }
+            |> Radix.Switch.withRadius Radix.None
+            |> Radix.Switch.view
+        , Radix.Switch.new
+            { checked = model.switch
+            , onToggle = UserToggledSwitch
+            }
+            |> Radix.Switch.withSize1
+            |> Radix.Switch.view
+        , Radix.Switch.new
+            { checked = model.switch
+            , onToggle = UserToggledSwitch
+            }
+            |> Radix.Switch.withSize3
+            |> Radix.Switch.view
+        , Radix.Switch.new
+            { checked = True
+            , onToggle = UserToggledSwitch
+            }
+            |> Radix.Switch.withIsDisabled
+            |> Radix.Switch.view
+        , Radix.Switch.new
+            { checked = False
+            , onToggle = UserToggledSwitch
+            }
+            |> Radix.Switch.withIsDisabled
+            |> Radix.Switch.view
+        ]
+        |> Radix.Flex.withMaxWidth "20rem"
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.view
 
 
 viewSliders : Model -> Html Msg

@@ -55,7 +55,7 @@ A port of [Radix UI](https://www.radix-ui.com/) to Elm to make for quick prototy
 -   [x] Skeleton
 -   [x] Slider
 -   [x] Spinner
--   [ ] Switch
+-   [x] Switch
 -   [ ] Table
 -   [ ] Tabs
 -   [ ] Tab Nav
