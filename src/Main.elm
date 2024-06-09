@@ -36,6 +36,7 @@ import Radix.Spinner
 import Radix.Strong
 import Radix.Switch
 import Radix.Table
+import Radix.Tabs
 import Radix.Text
 import Radix.TextArea
 import Radix.TextField
@@ -64,6 +65,7 @@ type alias Model =
     , slider2Thumb2 : Float
     , slider2Thumb3 : Float
     , switch : Bool
+    , activeTab : Tab
     }
 
 
@@ -80,6 +82,7 @@ init _ =
       , slider2Thumb2 = 65
       , slider2Thumb3 = 80
       , switch = True
+      , activeTab = Games
       }
     , Cmd.none
     )
@@ -106,6 +109,7 @@ type Msg
     | UserChangedSlider2Thumb2 Float
     | UserChangedSlider2Thumb3 Float
     | UserToggledSwitch Bool
+    | UserSelectedTab Tab
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -155,6 +159,9 @@ update msg model =
 
         UserToggledSwitch checked ->
             ( { model | switch = checked }, Cmd.none )
+
+        UserSelectedTab tab ->
+            ( { model | activeTab = tab }, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
@@ -223,6 +230,7 @@ view model =
              , viewSection "Modal" (viewModals model)
              , viewSection "Progress" viewProgresses
              , viewSection "Table" viewTables
+             , viewSection "Tab" (viewTabs model)
              , viewSection "Separator" viewSeparators
              , viewSection "Skeleton" viewSkeleton
              , viewSection "Slider" (viewSliders model)
@@ -249,6 +257,41 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+type Tab
+    = Games
+    | Music
+    | Movies
+
+
+viewTabs : Model -> Html Msg
+viewTabs model =
+    Radix.Flex.new
+        [ Radix.Tabs.new
+            { activeTab = model.activeTab
+            , onTabChange = UserSelectedTab
+            , tabs =
+                [ { value = Games
+                  , trigger = Html.text "Games"
+                  , content = Html.text "All my games!"
+                  }
+                , { value = Music
+                  , trigger = Html.text "Music"
+                  , content = Html.text "All my music!"
+                  }
+                , { value = Movies
+                  , trigger = Html.text "Movies"
+                  , content = Html.text "All my movies!"
+                  }
+                ]
+            }
+            |> Radix.Tabs.view
+        ]
+        |> Radix.Flex.withMaxWidth "40rem"
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.view
 
 
 type TableGroup

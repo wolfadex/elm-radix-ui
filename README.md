@@ -57,8 +57,9 @@ A port of [Radix UI](https://www.radix-ui.com/) to Elm to make for quick prototy
 -   [x] Spinner
 -   [x] Switch
 -   [x] Table
--   [ ] Tabs
+-   [x] Tabs
 -   [ ] Tab Nav
+-   [ ] Toast
 -   [x] Text Area
 -   [x] Text Field
 -   [x] Tooltip
