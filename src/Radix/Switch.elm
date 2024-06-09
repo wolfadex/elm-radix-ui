@@ -5,7 +5,6 @@ import Html.Attributes
 import Html.Events
 import Radix
 import Radix.Internal
-import Radix.Spinner
 
 
 

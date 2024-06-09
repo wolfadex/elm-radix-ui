@@ -35,6 +35,7 @@ import Radix.Slider.Thumb
 import Radix.Spinner
 import Radix.Strong
 import Radix.Switch
+import Radix.Table
 import Radix.Text
 import Radix.TextArea
 import Radix.TextField
@@ -221,6 +222,7 @@ view model =
              , viewSection "Inset" viewInset
              , viewSection "Modal" (viewModals model)
              , viewSection "Progress" viewProgresses
+             , viewSection "Table" viewTables
              , viewSection "Separator" viewSeparators
              , viewSection "Skeleton" viewSkeleton
              , viewSection "Slider" (viewSliders model)
@@ -247,6 +249,68 @@ viewSection label content =
         |> Radix.Heading.view
     , content
     ]
+
+
+type TableGroup
+    = Family
+    | Friend
+
+
+viewTables : Html msg
+viewTables =
+    let
+        data =
+            [ { name = "Bekah Schuster"
+              , email = "cool.lady@carl.com"
+              , group = Family
+              }
+            , { name = "Ryan Haskell-Glatz"
+              , email = "ryan.haskelglatz@cars.com"
+              , group = Friend
+              }
+            , { name = "Uriah Schuster"
+              , email = "uriah.schuster@fam.com"
+              , group = Family
+              }
+            ]
+
+        columns =
+            [ { header = Html.text "Name"
+              , cell = \row -> Html.text row.name
+              }
+            , { header = Html.text "Email"
+              , cell = \row -> Html.text row.email
+              }
+            , { header = Html.text "Group"
+              , cell =
+                    \row ->
+                        Html.text <|
+                            case row.group of
+                                Family ->
+                                    "Family"
+
+                                Friend ->
+                                    "Friend"
+              }
+            ]
+    in
+    Radix.Flex.new
+        [ Radix.Table.new
+            { data = data
+            , columns = columns
+            }
+            |> Radix.Table.view
+        , Radix.Table.new
+            { data = data
+            , columns = columns
+            }
+            |> Radix.Table.withVariantSurface
+            |> Radix.Table.view
+        ]
+        |> Radix.Flex.withMaxWidth "40rem"
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.view
 
 
 viewSwitches : Model -> Html Msg
