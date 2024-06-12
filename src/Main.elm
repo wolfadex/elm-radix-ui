@@ -5,6 +5,7 @@ import Html exposing (Html)
 import Html.Attributes
 import Html.Events
 import Radix
+import Radix.AlertDialog
 import Radix.Avatar
 import Radix.Badge
 import Radix.Blockquote
@@ -68,6 +69,7 @@ type alias Model =
     , switch : Bool
     , activeTab : Tab
     , activeSection : Section
+    , alertDialogOpen : Bool
     }
 
 
@@ -75,6 +77,7 @@ type Section
     = Headings
     | Text
     | Blockquote
+    | AlertDialog
     | AspectRatio
     | Avatar
     | Button
@@ -112,6 +115,7 @@ init _ =
       , switch = True
       , activeTab = Games
       , activeSection = Headings
+      , alertDialogOpen = False
       }
     , Cmd.none
     )
@@ -140,6 +144,8 @@ type Msg
     | UserChangedSlider2Thumb3 Float
     | UserToggledSwitch Bool
     | UserSelectedTab Tab
+    | UserClickedOpenAlertDialog
+    | UserClosedAlertDialog
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -195,6 +201,12 @@ update msg model =
 
         UserSelectedTab tab ->
             ( { model | activeTab = tab }, Cmd.none )
+
+        UserClickedOpenAlertDialog ->
+            ( { model | alertDialogOpen = True }, Cmd.none )
+
+        UserClosedAlertDialog ->
+            ( { model | alertDialogOpen = False }, Cmd.none )
 
 
 view : Model -> Browser.Document Msg
@@ -253,6 +265,9 @@ view model =
                                 |> Radix.Box.withWidth "15rem"
                                 |> Radix.Box.view
                             )
+                        , viewSectionTab AlertDialog
+                            "Alert Dialog"
+                            (viewAlertDialogs model)
                         , viewSectionTab AspectRatio
                             "Aspect Ratio"
                             viewAspectRatios
@@ -330,6 +345,50 @@ viewSectionTab section label content =
             |> Radix.Heading.view
     , content = content
     }
+
+
+viewAlertDialogs : Model -> Html Msg
+viewAlertDialogs model =
+    Radix.Flex.new
+        [ Radix.Button.new
+            { content = [ Html.text "Revoke access" ]
+            , onClick = UserClickedOpenAlertDialog
+            }
+            |> Radix.Button.withAccentColor Radix.Red
+            |> Radix.Button.view
+        , Radix.AlertDialog.new
+            { open = model.alertDialogOpen
+            , onClose = UserClosedAlertDialog
+            , body =
+                [ Radix.Flex.new
+                    [ Radix.Button.new
+                        { content = [ Html.text "Cancel" ]
+                        , onClick = UserClosedAlertDialog
+                        }
+                        |> Radix.Button.withAccentColor Radix.Gray
+                        |> Radix.Button.withVariantSoft
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Revoke access" ]
+                        , onClick = UserClosedAlertDialog
+                        }
+                        |> Radix.Button.withAccentColor Radix.Red
+                        |> Radix.Button.view
+                    ]
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withJustification Radix.JustifyEnd
+                    |> Radix.Flex.view
+                ]
+            }
+            |> Radix.AlertDialog.withTitle "Revoke access"
+            |> Radix.AlertDialog.withDescription [ Html.text "Are you sure? This application will no longer be accessible and any existing sessions will be expired." ]
+            |> Radix.AlertDialog.withMaxWidth "450px"
+            |> Radix.AlertDialog.view
+        ]
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withMaxWidth "20rem"
+        |> Radix.Flex.view
 
 
 type Tab
@@ -737,12 +796,13 @@ viewModals model =
             { open = model.modal1
             , onClose = UserClosedModal1
             , content =
-                Radix.Box.new
+                [ Radix.Box.new
                     [ Radix.Text.new [ Html.text "Hello, World!" ]
                         |> Radix.Text.view
                     ]
                     |> Radix.Box.withPaddingScale 3
                     |> Radix.Box.view
+                ]
             }
             |> Radix.Modal.view
         , Radix.Button.new
@@ -754,7 +814,7 @@ viewModals model =
             { open = model.modal2
             , onClose = UserClosedModal2
             , content =
-                Radix.Flex.new
+                [ Radix.Flex.new
                     [ Radix.Heading.new "Modal 2"
                         |> Radix.Heading.withSize 5
                         |> Radix.Heading.view
@@ -795,6 +855,7 @@ viewModals model =
                     |> Radix.Flex.withGapScale 3
                     |> Radix.Flex.withDirection Radix.Flex.Column
                     |> Radix.Flex.view
+                ]
             }
             |> Radix.Modal.view
         ]

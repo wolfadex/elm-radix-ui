@@ -6,17 +6,19 @@ import Html.Events
 import Json.Decode
 import Json.Encode
 import Radix
+import Radix.Internal
 
 
 type Config msg
     = Config
         { open : Bool
         , onClose : msg
-        , content : Html msg
+        , content : List (Html msg)
         , size : Int
         , width : Maybe String
         , minWidth : Maybe String
         , maxWidth : String
+        , style : Style
 
         --
         , customClassList : List ( String, Bool )
@@ -28,7 +30,7 @@ type Config msg
 new :
     { open : Bool
     , onClose : msg
-    , content : Html msg
+    , content : List (Html msg)
     }
     -> Config msg
 new options =
@@ -40,6 +42,7 @@ new options =
         , width = Nothing
         , minWidth = Nothing
         , maxWidth = "600px"
+        , style = PlainModal
 
         --
         , customClassList = []
@@ -102,6 +105,16 @@ withCustomAttributes customAttributes (Config config) =
         }
 
 
+type Style
+    = PlainModal
+    | AlertDialogModal
+
+
+asAlertDialog : Config msg -> Config msg
+asAlertDialog (Config config) =
+    Config { config | style = AlertDialogModal }
+
+
 view : Config msg -> Html msg
 view (Config config) =
     Html.node "dialog"
@@ -113,10 +126,13 @@ view (Config config) =
             else
                 "closed"
          , Html.Events.on "close" (closeDecoder config.onClose)
+         , Radix.Internal.attributeIf (config.style == AlertDialogModal)
+            (Html.Attributes.attribute "role" "alertdialog")
          , Html.Attributes.classList
             ([ ( "rt-BaseDialogContent", True )
              , ( "rt-BaseDialogContent-overrides", True )
-             , ( "rt-DialogContent", True )
+             , ( "rt-DialogContent", config.style == PlainModal )
+             , ( "rt-AlertDialogContent", config.style == AlertDialogModal )
              , ( "rt-r-size-" ++ String.fromInt config.size, True )
              , ( "rt-r-w", config.width /= Nothing )
              , ( "rt-r-min-w", config.minWidth /= Nothing )
@@ -139,7 +155,7 @@ view (Config config) =
          ]
             ++ config.customAttributes
         )
-        [ config.content ]
+        config.content
 
 
 closeDecoder : msg -> Json.Decode.Decoder msg

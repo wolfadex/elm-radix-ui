@@ -7,10 +7,15 @@
 .rt-BaseDialogContent-overrides {
     position: fixed;
     z-index: unset;
+    border: none;
 }
 
 * :has(dialog[open]) {
     overflow: hidden;
+}
+
+dialog[open]::backdrop {
+    background-color: var(--color-overlay);
 }
 
 /* Tooltips */

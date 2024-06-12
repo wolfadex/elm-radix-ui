@@ -26,7 +26,7 @@ A port of [Radix UI](https://www.radix-ui.com/) to Elm to make for quick prototy
 
 ### Components
 
--   [ ] Alert Dialog
+-   [x] Alert Dialog
 -   [x] Aspect Ratio
 -   [x] Avatar
 -   [x] Badge
