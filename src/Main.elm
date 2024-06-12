@@ -19,6 +19,7 @@ import Radix.Container
 import Radix.DataList
 import Radix.DataList.Item
 import Radix.DataList.Label
+import Radix.Dialog
 import Radix.Emphasis
 import Radix.Flex
 import Radix.Grid
@@ -70,6 +71,7 @@ type alias Model =
     , activeTab : Tab
     , activeSection : Section
     , alertDialogOpen : Bool
+    , dialogOpen : Bool
     }
 
 
@@ -78,6 +80,7 @@ type Section
     | Text
     | Blockquote
     | AlertDialog
+    | Dialog
     | AspectRatio
     | Avatar
     | Button
@@ -116,6 +119,7 @@ init _ =
       , activeTab = Games
       , activeSection = Headings
       , alertDialogOpen = False
+      , dialogOpen = False
       }
     , Cmd.none
     )
@@ -146,6 +150,8 @@ type Msg
     | UserSelectedTab Tab
     | UserClickedOpenAlertDialog
     | UserClosedAlertDialog
+    | UserClickedOpenDialog
+    | UserClosedDialog
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -208,6 +214,12 @@ update msg model =
         UserClosedAlertDialog ->
             ( { model | alertDialogOpen = False }, Cmd.none )
 
+        UserClickedOpenDialog ->
+            ( { model | dialogOpen = True }, Cmd.none )
+
+        UserClosedDialog ->
+            ( { model | dialogOpen = False }, Cmd.none )
+
 
 view : Model -> Browser.Document Msg
 view model =
@@ -268,6 +280,9 @@ view model =
                         , viewSectionTab AlertDialog
                             "Alert Dialog"
                             (viewAlertDialogs model)
+                        , viewSectionTab Dialog
+                            "Dialog"
+                            (viewDialogs model)
                         , viewSectionTab AspectRatio
                             "Aspect Ratio"
                             viewAspectRatios
@@ -382,6 +397,50 @@ viewAlertDialogs model =
             }
             |> Radix.AlertDialog.withTitle "Revoke access"
             |> Radix.AlertDialog.withDescription [ Html.text "Are you sure? This application will no longer be accessible and any existing sessions will be expired." ]
+            |> Radix.AlertDialog.withMaxWidth "450px"
+            |> Radix.AlertDialog.view
+        ]
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withMaxWidth "20rem"
+        |> Radix.Flex.view
+
+
+viewDialogs : Model -> Html Msg
+viewDialogs model =
+    Radix.Flex.new
+        [ Radix.Button.new
+            { content = [ Html.text "Give access" ]
+            , onClick = UserClickedOpenDialog
+            }
+            |> Radix.Button.withAccentColor Radix.Green
+            |> Radix.Button.view
+        , Radix.AlertDialog.new
+            { open = model.dialogOpen
+            , onClose = UserClosedDialog
+            , body =
+                [ Radix.Flex.new
+                    [ Radix.Button.new
+                        { content = [ Html.text "Cancel" ]
+                        , onClick = UserClosedDialog
+                        }
+                        |> Radix.Button.withAccentColor Radix.Gray
+                        |> Radix.Button.withVariantSoft
+                        |> Radix.Button.view
+                    , Radix.Button.new
+                        { content = [ Html.text "Give access" ]
+                        , onClick = UserClosedDialog
+                        }
+                        |> Radix.Button.withAccentColor Radix.Green
+                        |> Radix.Button.view
+                    ]
+                    |> Radix.Flex.withGapScale 3
+                    |> Radix.Flex.withJustification Radix.JustifyEnd
+                    |> Radix.Flex.view
+                ]
+            }
+            |> Radix.AlertDialog.withTitle "Give access"
+            |> Radix.AlertDialog.withDescription [ Html.text "Congratulations. You now have access 🎉" ]
             |> Radix.AlertDialog.withMaxWidth "450px"
             |> Radix.AlertDialog.view
         ]

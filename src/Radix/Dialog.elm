@@ -1,4 +1,4 @@
-module Radix.AlertDialog exposing (..)
+module Radix.Dialog exposing (..)
 
 import Html exposing (Html)
 import Html.Attributes
@@ -127,6 +127,39 @@ withCustomAttributes customAttributes (Config config) =
 
 view : Config msg -> Html msg
 view (Config config) =
+    -- <div
+    --     role="dialog"
+    --     id="radix-:r1mj:"
+    --     aria-describedby="radix-:r1ml:"
+    --     aria-labelledby="radix-:r1mk:"
+    --     data-state="open"
+    --     style="--max-width: 450px; pointer-events: auto;"
+    --     class="rt-BaseDialogContent rt-DialogContent rt-r-size-3 rt-r-max-w"
+    --     tabindex="-1"
+    -- >
+    --   <h1 id="radix-:r1mk:" class="rt-Heading rt-r-size-5 rt-r-lt-start rt-r-mb-3">Edit profile</h1>
+    --   <p id="radix-:r1ml:" class="rt-Text rt-r-size-2 rt-r-mb-4">Make changes to your profile.</p>
+    --   <div class="rt-Flex rt-r-fd-column rt-r-gap-3">
+    --     <label>
+    --       <div class="rt-Text rt-r-size-2 rt-r-weight-bold rt-r-mb-1">Name</div>
+    --       <div class="rt-TextFieldRoot rt-r-size-2 rt-variant-surface">
+    --         <input spellcheck="false" placeholder="Enter your full name" class="rt-reset rt-TextFieldInput" value="Freja Johnsen">
+    --       </div>
+    --     </label>
+    --     <label>
+    --       <div class="rt-Text rt-r-size-2 rt-r-weight-bold rt-r-mb-1">Email</div>
+    --       <div class="rt-TextFieldRoot rt-r-size-2 rt-variant-surface">
+    --         <input spellcheck="false" placeholder="Enter your email" class="rt-reset rt-TextFieldInput" value="freja@example.com" data-keeper-lock-id="k-de07xzagmvj">
+    --         <div></div>
+    --         <keeper-lock class="focus-visible logged-in" tabindex="-1" style="background-image: url(&quot;moz-extension://e44b850e-3e40-4a1d-9775-a3ca2a1219e6/images/ico-field-fill-lock.svg&quot;) !important; background-size: 24px 24px !important; cursor: pointer !important; width: 24px !important; position: absolute !important; opacity: 0 !important; margin-top: auto !important; min-width: 24px !important; top: 189.4px; left: 398px; z-index: 1; padding: 0px; height: 24px !important;" id="k-de07xzagmvj" aria-label="Open Keeper Popup" role="button"></keeper-lock>
+    --       </div>
+    --     </label>
+    --   </div>
+    --   <div class="rt-Flex rt-r-jc-end rt-r-gap-3 rt-r-mt-4">
+    --     <button data-accent-color="gray" type="button" class="rt-reset rt-BaseButton rt-r-size-2 rt-variant-soft rt-Button">Cancel</button>
+    --     <button data-accent-color="" type="button" class="rt-reset rt-BaseButton rt-r-size-2 rt-variant-solid rt-Button">Save</button>
+    --   </div>
+    -- </div>
     Radix.Modal.new
         { open = config.open
         , onClose = config.onClose

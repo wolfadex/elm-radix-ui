@@ -107,7 +107,13 @@ withCustomAttributes customAttributes (Config config) =
 
 type Style
     = PlainModal
+    | DialogModal
     | AlertDialogModal
+
+
+asDialog : Config msg -> Config msg
+asDialog (Config config) =
+    Config { config | style = DialogModal }
 
 
 asAlertDialog : Config msg -> Config msg
@@ -128,10 +134,12 @@ view (Config config) =
          , Html.Events.on "close" (closeDecoder config.onClose)
          , Radix.Internal.attributeIf (config.style == AlertDialogModal)
             (Html.Attributes.attribute "role" "alertdialog")
+         , Radix.Internal.attributeIf (config.style == DialogModal)
+            (Html.Attributes.attribute "role" "dialog")
          , Html.Attributes.classList
             ([ ( "rt-BaseDialogContent", True )
              , ( "rt-BaseDialogContent-overrides", True )
-             , ( "rt-DialogContent", config.style == PlainModal )
+             , ( "rt-DialogContent", config.style == PlainModal || config.style == DialogModal )
              , ( "rt-AlertDialogContent", config.style == AlertDialogModal )
              , ( "rt-r-size-" ++ String.fromInt config.size, True )
              , ( "rt-r-w", config.width /= Nothing )

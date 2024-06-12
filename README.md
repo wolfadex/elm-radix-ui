@@ -38,7 +38,7 @@ A port of [Radix UI](https://www.radix-ui.com/) to Elm to make for quick prototy
 -   [ ] Checkbox Cards
 -   [ ] Context Menu
 -   [x] Data List
--   [ ] Dialog
+-   [x] Dialog
 -   [ ] Dropdown Menu
 -   [ ] Hover Card
 -   [x] Icon Button
