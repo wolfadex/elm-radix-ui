@@ -78,7 +78,7 @@ A port of [Radix UI](https://www.radix-ui.com/) to Elm to make for quick prototy
 
 ### Getting Started
 
-Clone this template, then run
+Clone this repo, then run
 
 ```sh
 npm install

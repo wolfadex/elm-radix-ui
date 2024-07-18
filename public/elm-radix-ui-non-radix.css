@@ -18,6 +18,12 @@ dialog[open]::backdrop {
     background-color: var(--color-overlay);
 }
 
+.rt-SelectContent {
+    box-sizing: border-box;
+    padding: var(--select-content-padding);
+    position: fixed;
+}
+
 /* Tooltips */
 
 .rt-TooltipContent:popover-open {

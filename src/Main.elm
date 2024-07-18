@@ -31,6 +31,8 @@ import Radix.Layout
 import Radix.Link
 import Radix.Modal
 import Radix.Progress
+import Radix.Select
+import Radix.Select.Item
 import Radix.Separator
 import Radix.Skeleton
 import Radix.Slider
@@ -72,6 +74,8 @@ type alias Model =
     , activeSection : Section
     , alertDialogOpen : Bool
     , dialogOpen : Bool
+    , selectValue : Maybe Flavor
+    , selectModel : Radix.Select.Model Flavor
     }
 
 
@@ -94,6 +98,7 @@ type Section
     | Progress
     | Table
     | Tab
+    | Select
     | Separator
     | Skeleton
     | Slider
@@ -120,6 +125,8 @@ init _ =
       , activeSection = Headings
       , alertDialogOpen = False
       , dialogOpen = False
+      , selectValue = Nothing
+      , selectModel = Radix.Select.init
       }
     , Cmd.none
     )
@@ -152,6 +159,7 @@ type Msg
     | UserClosedAlertDialog
     | UserClickedOpenDialog
     | UserClosedDialog
+    | SelectMsgSent (Radix.Select.Msg Flavor)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -219,6 +227,23 @@ update msg model =
 
         UserClosedDialog ->
             ( { model | dialogOpen = False }, Cmd.none )
+
+        SelectMsgSent msg_ ->
+            Radix.Select.update
+                { msg = msg_
+                , model = model.selectModel
+                , toMsg = SelectMsgSent
+                , toModel = \selectModel -> { model | selectModel = selectModel }
+                , onSelect =
+                    \flavor ( selectModel, cmd ) ->
+                        ( { model
+                            | selectValue = Just flavor
+                            , selectModel = selectModel
+                          }
+                        , cmd
+                        )
+                , config = toSelectConfig model
+                }
 
 
 view : Model -> Browser.Document Msg
@@ -322,6 +347,7 @@ view model =
                         , viewSectionTab Progress "Progress" viewProgresses
                         , viewSectionTab Table "Table" viewTables
                         , viewSectionTab Tab "Tab" (viewTabs model)
+                        , viewSectionTab Select "Select" (viewSelects model)
                         , viewSectionTab Separator "Separator" viewSeparators
                         , viewSectionTab Skeleton "Skeleton" viewSkeleton
                         , viewSectionTab Slider "Slider" (viewSliders model)
@@ -950,6 +976,87 @@ viewSkeleton =
         ]
         |> Radix.Flex.withGapScale 3
         |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.view
+
+
+type Flavor
+    = Grape
+    | Cherry
+    | Lemon
+    | Orange
+    | BlueRaspberry
+    | Bubblegum
+
+
+toSelectConfig : Model -> Radix.Select.Config Flavor Msg
+toSelectConfig model =
+    Radix.Select.new
+        { value = model.selectValue
+        , toMsg = SelectMsgSent
+        , itemToString =
+            \flavor ->
+                case flavor of
+                    Grape ->
+                        "Grape"
+
+                    Cherry ->
+                        "Cherry"
+
+                    Lemon ->
+                        "Lemon"
+
+                    Orange ->
+                        "Orange"
+
+                    BlueRaspberry ->
+                        "Blue Raspberry"
+
+                    Bubblegum ->
+                        "Bubblegum"
+        , items =
+            [ Radix.Select.Item.newGroup
+                { label = "Real"
+                , items =
+                    [ Radix.Select.Item.newItem
+                        { value = Grape }
+                    , Radix.Select.Item.newItem
+                        { value = Cherry }
+                    , Radix.Select.Item.newItem
+                        { value = Lemon }
+                        |> Radix.Select.Item.withIsDisabled
+                    , Radix.Select.Item.newItem
+                        { value = Orange }
+                    ]
+                }
+            , Radix.Select.Item.separator
+            , Radix.Select.Item.newGroup
+                { label = "Fake"
+                , items =
+                    [ Radix.Select.Item.newItem
+                        { value = Bubblegum }
+                    , Radix.Select.Item.newItem
+                        { value = BlueRaspberry }
+                    ]
+                }
+            ]
+        }
+        |> Radix.Select.withPlaceholder "Select a flavor"
+
+
+viewSelects : Model -> Html Msg
+viewSelects model =
+    Radix.Flex.new
+        [ Radix.Box.new
+            [ model
+                |> toSelectConfig
+                |> Radix.Select.view model.selectModel
+            ]
+            |> Radix.Box.withPaddingLeftScale 5
+            |> Radix.Box.view
+        ]
+        |> Radix.Flex.withGapScale 3
+        |> Radix.Flex.withDirection Radix.Flex.Column
+        |> Radix.Flex.withMaxWidth "20rem"
         |> Radix.Flex.view
 
 
