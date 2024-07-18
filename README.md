@@ -50,7 +50,7 @@ A port of [Radix UI](https://www.radix-ui.com/) to Elm to make for quick prototy
 -   [ ] Radio Cards
 -   [ ] Scroll Area
 -   [ ] Segmented Control
--   [ ] Select
+-   [x] Select
 -   [x] Separator
 -   [x] Skeleton
 -   [x] Slider
